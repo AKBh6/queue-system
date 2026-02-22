@@ -1,36 +1,47 @@
-let queue = [];
-let tokenCounter = 0;
-
+const themeToggle = document.getElementById("themeToggle");
+const orderBtn = document.getElementById("orderBtn");
+const restaurantSelect = document.getElementById("restaurantSelect");
 const currentDisplay = document.getElementById("current");
-const waitingDisplay = document.getElementById("waiting");
-const generateBtn = document.getElementById("generateBtn");
-const serveBtn = document.getElementById("serveBtn");
-const resetBtn = document.getElementById("resetBtn");
+const statusDisplay = document.getElementById("status");
 
-generateBtn.addEventListener("click", () => {
-  tokenCounter++;
-  queue.push(tokenCounter);
-  updateWaiting();
+let activeToken = null;
+
+themeToggle.addEventListener("click", () => {
+  document.body.classList.toggle("dark");
+  themeToggle.textContent = 
+    document.body.classList.contains("dark") ? "☀️" : "🌙";
 });
 
-serveBtn.addEventListener("click", () => {
-  if (queue.length === 0) {
-    currentDisplay.textContent = "None";
+orderBtn.addEventListener("click", () => {
+  const restaurant = restaurantSelect.value;
+
+  if (!restaurant) {
+    alert("Please select a restaurant.");
     return;
   }
 
-  const servedToken = queue.shift();
-  currentDisplay.textContent = servedToken;
-  updateWaiting();
+  activeToken = Math.floor(1000 + Math.random() * 9000);
+  currentDisplay.textContent = activeToken;
+  statusDisplay.textContent = "Preparing...";
+
+  setTimeout(() => {
+    statusDisplay.textContent = "Ready!";
+    showNotification(restaurant, activeToken);
+  }, 5000);
 });
 
-resetBtn.addEventListener("click", () => {
-  queue = [];
-  tokenCounter = 0;
-  currentDisplay.textContent = "None";
-  updateWaiting();
-});
-
-function updateWaiting() {
-  waitingDisplay.textContent = queue.length;
+function showNotification(restaurant, token) {
+  if (Notification.permission === "granted") {
+    new Notification(`Order Ready at ${restaurant}`, {
+      body: `Token #${token} is ready for pickup!`
+    });
+  } else if (Notification.permission !== "denied") {
+    Notification.requestPermission().then(permission => {
+      if (permission === "granted") {
+        new Notification(`Order Ready at ${restaurant}`, {
+          body: `Token #${token} is ready for pickup!`
+        });
+      }
+    });
+  }
 }
