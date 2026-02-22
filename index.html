@@ -2,28 +2,39 @@
 <html lang="en">
 <head>
   <meta charset="UTF-8">
-  <title>Food Stall Queue System</title>
+  <title>QuickBite Queue</title>
   <link rel="stylesheet" href="style.css">
 </head>
 <body>
 
   <div class="container">
-    <h1>Food Stall Queue System</h1>
+    
+    <div class="top-bar">
+      <div class="logo">🍽️ QuickBite</div>
+      <button id="themeToggle">🌙</button>
+    </div>
+
+    <h1>Reserve & Order</h1>
+
+    <select id="restaurantSelect">
+      <option value="">Select Restaurant</option>
+      <option>Spice Hub</option>
+      <option>Burger Point</option>
+      <option>Pizza Corner</option>
+      <option>Chaat Junction</option>
+    </select>
+
+    <button id="orderBtn">Place Order</button>
 
     <div class="card">
-      <p>Current Token</p>
+      <p>Your Token</p>
       <h2 id="current">None</h2>
     </div>
 
-    <div class="buttons">
-      <button id="generateBtn">Generate Token</button>
-      <button id="serveBtn">Serve Next</button>
-      <button id="resetBtn">Reset</button>
+    <div class="info">
+      <p>Status: <span id="status">Waiting</span></p>
     </div>
 
-    <div class="info">
-      <p>Total Waiting: <span id="waiting">0</span></p>
-    </div>
   </div>
 
   <script src="script.js"></script>
