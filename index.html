@@ -1019,23 +1019,45 @@
   }
 
   function updateCartUI() {
-    const count = cart.length;
-    document.getElementById('cartCount').textContent = count;
-    document.getElementById('placeOrderBtn').disabled = count === 0;
-    const summary = document.getElementById('cartSummary');
-    if (count === 0) {
-      summary.innerHTML = '<div class="cart-empty">Your cart is empty — add something delicious!</div>';
-    } else {
-      const total = cart.reduce((s, c) => s + c.price, 0);
-      summary.innerHTML = cart.map(c => `
-        <div class="cart-item">
-          <span>${c.emoji} ${c.name}</span>
-          <strong>₹${c.price}</strong>
-        </div>
-      `).join('') + `<div class="cart-total">Total: ₹${total}</div>`;
-    }
-    document.getElementById('cartBtn').innerHTML = `🛒 Cart <span class="cart-count">${count}</span>`;
+  const count = cart.reduce((sum, item) => sum + item.qty, 0);
+  document.getElementById('cartCount').textContent = count;
+  document.getElementById('placeOrderBtn').disabled = count === 0;
+
+  const summary = document.getElementById('cartSummary');
+
+  if (count === 0) {
+    summary.innerHTML =
+      '<div class="cart-empty">Your cart is empty — add something delicious!</div>';
+    return;
   }
+
+  const subtotal = cart.reduce((sum, item) => sum + item.price * item.qty, 0);
+  const gst = subtotal * GST_RATE;
+  const total = subtotal + gst;
+
+  summary.innerHTML =
+    cart.map(item => `
+      <div class="cart-item">
+        <span>${item.emoji} ${item.name}</span>
+        <div>
+          <button onclick="changeQty(${item.id}, -1)">−</button>
+          <span style="margin:0 8px">${item.qty}</span>
+          <button onclick="changeQty(${item.id}, 1)">+</button>
+          <strong style="margin-left:10px">₹${item.price * item.qty}</strong>
+        </div>
+      </div>
+    `).join('') +
+    `
+      <div class="cart-total">
+        Subtotal: ₹${subtotal.toFixed(2)} <br>
+        GST (5%): ₹${gst.toFixed(2)} <br>
+        <strong>Final Total: ₹${total.toFixed(2)}</strong>
+      </div>
+    `;
+
+  document.getElementById('cartBtn').innerHTML =
+    `🛒 Cart <span class="cart-count">${count}</span>`;
+}
 
   // ═══════════════════════════════
   // FILTERS
