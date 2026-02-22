@@ -2,38 +2,41 @@
 <html lang="en">
 <head>
   <meta charset="UTF-8">
-  <title>QuickBite Queue</title>
+  <title>QuickBite</title>
   <link rel="stylesheet" href="style.css">
 </head>
 <body>
 
-  <div class="container">
-    
-    <div class="top-bar">
-      <div class="logo">🍽️ QuickBite</div>
-      <button id="themeToggle">🌙</button>
-    </div>
+  <div class="app">
 
-    <h1>Reserve & Order</h1>
+    <header>
+      <div class="logo">
+        <div class="logo-icon">QB</div>
+        <h1>QuickBite</h1>
+      </div>
+      <button id="themeToggle" class="theme-btn">Dark</button>
+    </header>
 
-    <select id="restaurantSelect">
-      <option value="">Select Restaurant</option>
-      <option>Spice Hub</option>
-      <option>Burger Point</option>
-      <option>Pizza Corner</option>
-      <option>Chaat Junction</option>
-    </select>
+    <section class="restaurants">
+      <h2>Select Restaurant</h2>
 
-    <button id="orderBtn">Place Order</button>
+      <div class="restaurant-grid">
+        <div class="restaurant-card" data-name="Spice Hub">Spice Hub</div>
+        <div class="restaurant-card" data-name="Burger Point">Burger Point</div>
+        <div class="restaurant-card" data-name="Pizza Corner">Pizza Corner</div>
+        <div class="restaurant-card" data-name="Chaat Junction">Chaat Junction</div>
+      </div>
+    </section>
 
-    <div class="card">
-      <p>Your Token</p>
-      <h2 id="current">None</h2>
-    </div>
+    <section class="order-section">
+      <button id="orderBtn" disabled>Place Order</button>
 
-    <div class="info">
-      <p>Status: <span id="status">Waiting</span></p>
-    </div>
+      <div class="token-card">
+        <p>Your Token</p>
+        <h2 id="tokenDisplay">--</h2>
+        <span id="statusDisplay">No Active Order</span>
+      </div>
+    </section>
 
   </div>
 
