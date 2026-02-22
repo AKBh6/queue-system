@@ -914,6 +914,7 @@
   let searchQuery = '';
   let hasActiveOrder = false;
   const OUT_OF_STOCK_DELAY = 5 * 60 * 1000; // 5 minutes
+  const GST_RATE = 0.05; // 5% GST
 
   // ═══════════════════════════════
   // CURSOR
@@ -1001,22 +1002,22 @@
   }
 
   function toggleCart(id, btn) {
-    const item = menuItems.find(m => m.id === id);
-    const idx = cart.findIndex(c => c.id === id);
-    if (idx > -1) {
-      cart.splice(idx, 1);
-      btn.textContent = '+ Add';
-      btn.classList.remove('added');
-      showToast(`Removed "${item.name}" from cart`);
-    } else {
-      cart.push({ ...item, qty: 1 });
-      btn.textContent = '✓ Added';
-      btn.classList.add('added');
-      showToast(`Added "${item.name}" to cart! 🎉`);
-      spawnParticles(btn, item.emoji);
-    }
-    updateCartUI();
+  const item = menuItems.find(m => m.id === id);
+  const existing = cart.find(c => c.id === id);
+
+  if (existing) {
+    existing.qty += 1;
+    showToast(`Added another "${item.name}"`);
+  } else {
+    cart.push({ ...item, qty: 1 });
+    btn.textContent = '✓ Added';
+    btn.classList.add('added');
+    showToast(`Added "${item.name}" to cart! 🎉`);
+    spawnParticles(btn, item.emoji);
   }
+
+  updateCartUI();
+}
 
   function updateCartUI() {
   const count = cart.reduce((sum, item) => sum + item.qty, 0);
@@ -1058,6 +1059,7 @@
   document.getElementById('cartBtn').innerHTML =
     `🛒 Cart <span class="cart-count">${count}</span>`;
 }
+
 
   // ═══════════════════════════════
   // FILTERS
