@@ -7,818 +7,458 @@
   <link href="https://fonts.googleapis.com/css2?family=Fraunces:ital,wght@0,400;0,700;0,900;1,400&family=DM+Sans:wght@300;400;500;600&display=swap" rel="stylesheet">
   <style>
     :root {
-      --bg: #fdf8f0;
-      --card: #ffffff;
-      --text: #1c1309;
-      --muted: #7a6a55;
-      --primary: #e84b1a;
-      --primary-light: #ff6b3d;
-      --accent: #f5c842;
-      --green: #2d8a4e;
-      --border: #e8dece;
-      --shadow: rgba(232, 75, 26, 0.12);
+      --bg: #fdf8f0; --card: #ffffff; --text: #1c1309; --muted: #7a6a55;
+      --primary: #e84b1a; --primary-light: #ff6b3d; --accent: #f5c842;
+      --green: #2d8a4e; --border: #e8dece; --shadow: rgba(232,75,26,0.12);
       --chat-bg: #f0ebe3;
     }
     body.dark {
-      --bg: #0f0d0a;
-      --card: #1a1714;
-      --text: #f5ede0;
-      --muted: #9c8b74;
-      --border: #2a2420;
-      --shadow: rgba(232, 75, 26, 0.2);
-      --chat-bg: #151210;
+      --bg: #0f0d0a; --card: #1a1714; --text: #f5ede0; --muted: #9c8b74;
+      --border: #2a2420; --shadow: rgba(232,75,26,0.2); --chat-bg: #151210;
     }
     * { margin: 0; padding: 0; box-sizing: border-box; }
     html { scroll-behavior: smooth; }
     body {
-      font-family: 'DM Sans', sans-serif;
-      background: var(--bg);
-      color: var(--text);
-      transition: background 0.4s, color 0.4s;
-      min-height: 100vh;
-      overflow-x: hidden;
+      font-family: 'DM Sans', sans-serif; background: var(--bg); color: var(--text);
+      transition: background 0.4s, color 0.4s; min-height: 100vh; overflow-x: hidden;
     }
-
-    /* === NOISE OVERLAY === */
     body::before {
-      content: '';
-      position: fixed;
-      inset: 0;
+      content: ''; position: fixed; inset: 0; pointer-events: none; z-index: 0; opacity: 0.4;
       background-image: url("data:image/svg+xml,%3Csvg viewBox='0 0 256 256' xmlns='http://www.w3.org/2000/svg'%3E%3Cfilter id='noise'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.9' numOctaves='4' stitchTiles='stitch'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23noise)' opacity='0.03'/%3E%3C/svg%3E");
-      pointer-events: none;
-      z-index: 0;
-      opacity: 0.4;
     }
 
-    /* === HEADER === */
+    /* ── HEADER ── */
     header {
-      position: sticky; top: 0;
-      z-index: 100;
-      background: var(--bg);
-      border-bottom: 1px solid var(--border);
-      padding: 14px 40px;
-      display: flex;
-      justify-content: space-between;
-      align-items: center;
+      position: sticky; top: 0; z-index: 100; background: var(--bg);
+      border-bottom: 1px solid var(--border); padding: 14px 40px;
+      display: flex; justify-content: space-between; align-items: center;
       backdrop-filter: blur(12px);
     }
-    .logo {
-      display: flex;
-      align-items: center;
-      gap: 12px;
-      text-decoration: none;
-    }
+    .logo { display: flex; align-items: center; gap: 12px; text-decoration: none; }
     .logo-icon {
-      width: 48px; height: 48px;
+      width: 48px; height: 48px; border-radius: 14px; flex-shrink: 0; font-size: 26px;
       background: linear-gradient(135deg, var(--primary), var(--accent));
-      border-radius: 14px;
-      display: flex;
-      align-items: center;
-      justify-content: center;
-      font-size: 26px;
-      box-shadow: 0 4px 20px var(--shadow);
-      animation: logoFloat 3s ease-in-out infinite;
-      flex-shrink: 0;
-    }
-    @keyframes logoFloat {
-      0%, 100% { transform: translateY(0) rotate(-2deg); }
-      50% { transform: translateY(-4px) rotate(2deg); }
-    }
-    .logo-text h1 {
-      font-family: 'Fraunces', serif;
-      font-size: 26px;
-      font-weight: 900;
-      color: var(--text);
-      line-height: 1;
-      letter-spacing: -1px;
-    }
-    .logo-text span {
-      font-size: 10px;
-      color: var(--primary);
-      letter-spacing: 2px;
-      text-transform: uppercase;
-      font-weight: 600;
-    }
-    .header-actions { display: flex; gap: 10px; align-items: center; }
-    .cart-btn {
-      background: var(--primary);
-      color: white;
-      border: none;
-      border-radius: 50px;
-      padding: 10px 18px;
-      font-family: 'DM Sans', sans-serif;
-      font-weight: 600;
-      cursor: pointer;
-      font-size: 14px;
-      transition: all 0.2s;
-      display: flex; align-items: center; gap: 8px;
-      white-space: nowrap;
-    }
-    .cart-btn:hover { background: var(--primary-light); transform: scale(1.04); }
-    .cart-count {
-      background: var(--accent);
-      color: var(--text);
-      border-radius: 50%;
-      width: 20px; height: 20px;
-      font-size: 11px;
-      font-weight: 700;
       display: flex; align-items: center; justify-content: center;
-      flex-shrink: 0;
+      box-shadow: 0 4px 20px var(--shadow); animation: logoFloat 3s ease-in-out infinite;
+    }
+    @keyframes logoFloat { 0%,100%{transform:translateY(0) rotate(-2deg)} 50%{transform:translateY(-4px) rotate(2deg)} }
+    .logo-text h1 { font-family:'Fraunces',serif; font-size:26px; font-weight:900; color:var(--text); line-height:1; letter-spacing:-1px; }
+    .logo-text span { font-size:10px; color:var(--primary); letter-spacing:2px; text-transform:uppercase; font-weight:600; }
+    .header-actions { display:flex; gap:10px; align-items:center; }
+    .cart-btn {
+      background:var(--primary); color:white; border:none; border-radius:50px;
+      padding:10px 18px; font-family:'DM Sans',sans-serif; font-weight:600; cursor:pointer;
+      font-size:14px; transition:all 0.2s; display:flex; align-items:center; gap:8px; white-space:nowrap;
+      -webkit-tap-highlight-color:transparent;
+    }
+    .cart-btn:hover { background:var(--primary-light); transform:scale(1.04); }
+    .cart-count {
+      background:var(--accent); color:var(--text); border-radius:50%; width:20px; height:20px;
+      font-size:11px; font-weight:700; display:flex; align-items:center; justify-content:center; flex-shrink:0;
     }
     .theme-btn {
-      background: var(--card);
-      border: 1px solid var(--border);
-      color: var(--text);
-      border-radius: 50%;
-      width: 40px; height: 40px;
-      cursor: pointer;
-      font-size: 17px;
-      transition: all 0.2s;
-      display: flex; align-items: center; justify-content: center;
-      flex-shrink: 0;
+      background:var(--card); border:1px solid var(--border); color:var(--text); border-radius:50%;
+      width:40px; height:40px; cursor:pointer; font-size:17px; transition:all 0.2s;
+      display:flex; align-items:center; justify-content:center; flex-shrink:0;
+      -webkit-tap-highlight-color:transparent;
     }
-    .theme-btn:hover { border-color: var(--primary); transform: scale(1.08); }
+    .theme-btn:hover { border-color:var(--primary); transform:scale(1.08); }
 
-    /* === BETA BANNER === */
+    /* ── BETA BANNER ── */
     .beta-banner {
-      background: linear-gradient(135deg, #1a1309, #2d1a09);
-      color: var(--accent);
-      text-align: center;
-      padding: 9px 16px;
-      font-size: 12px;
-      font-weight: 600;
-      letter-spacing: 0.5px;
+      background:linear-gradient(135deg,#1a1309,#2d1a09); color:var(--accent);
+      text-align:center; padding:9px 16px; font-size:12px; font-weight:600; letter-spacing:0.5px;
     }
-    .beta-banner strong { color: white; }
+    .beta-banner strong { color:white; }
 
-    /* === HERO === */
+    /* ── HERO ── */
     .hero {
-      padding: 50px 40px 36px;
-      max-width: 1100px;
-      margin: auto;
-      display: grid;
-      grid-template-columns: 1fr auto;
-      gap: 40px;
-      align-items: center;
+      padding:50px 40px 36px; max-width:1100px; margin:auto;
+      display:grid; grid-template-columns:1fr auto; gap:40px; align-items:center;
     }
     .hero-tag {
-      display: inline-flex;
-      align-items: center;
-      gap: 8px;
-      background: var(--accent);
-      color: var(--text);
-      border-radius: 50px;
-      padding: 5px 14px;
-      font-size: 11px;
-      font-weight: 700;
-      letter-spacing: 1px;
-      text-transform: uppercase;
-      margin-bottom: 14px;
+      display:inline-flex; align-items:center; gap:8px; background:var(--accent);
+      color:var(--text); border-radius:50px; padding:5px 14px; font-size:11px;
+      font-weight:700; letter-spacing:1px; text-transform:uppercase; margin-bottom:14px;
     }
-    .hero h2 {
-      font-family: 'Fraunces', serif;
-      font-size: clamp(32px, 5vw, 60px);
-      font-weight: 900;
-      line-height: 1.1;
-      margin-bottom: 12px;
-    }
-    .hero h2 em { font-style: italic; color: var(--primary); }
-    .hero p { color: var(--muted); font-size: 15px; max-width: 460px; line-height: 1.7; }
+    .hero h2 { font-family:'Fraunces',serif; font-size:clamp(32px,5vw,60px); font-weight:900; line-height:1.1; margin-bottom:12px; }
+    .hero h2 em { font-style:italic; color:var(--primary); }
+    .hero p { color:var(--muted); font-size:15px; max-width:460px; line-height:1.7; }
     .hero-emoji {
-      font-size: 90px;
-      animation: heroFloat 4s ease-in-out infinite;
-      filter: drop-shadow(0 20px 30px var(--shadow));
-      transition: transform 0.2s;
-      user-select: none;
+      font-size:90px; animation:heroFloat 4s ease-in-out infinite;
+      filter:drop-shadow(0 20px 30px var(--shadow)); transition:transform 0.2s; user-select:none;
     }
-    @keyframes heroFloat {
-      0%, 100% { transform: translateY(0) scale(1); }
-      50% { transform: translateY(-12px) scale(1.05); }
-    }
+    @keyframes heroFloat { 0%,100%{transform:translateY(0) scale(1)} 50%{transform:translateY(-12px) scale(1.05)} }
 
-    /* === CONTROLS === */
-    .controls {
-      max-width: 1100px;
-      margin: 0 auto 28px;
-      padding: 0 40px;
-      display: flex;
-      gap: 14px;
-      flex-wrap: wrap;
-    }
-    .search-bar {
-      flex: 1;
-      min-width: 180px;
-      position: relative;
-    }
+    /* ── CONTROLS ── */
+    .controls { max-width:1100px; margin:0 auto 16px; padding:0 40px; display:flex; gap:14px; flex-wrap:wrap; }
+    .search-bar { flex:1; min-width:180px; position:relative; }
     .search-bar input {
-      width: 100%;
-      padding: 13px 18px 13px 46px;
-      border: 1.5px solid var(--border);
-      border-radius: 50px;
-      background: var(--card);
-      color: var(--text);
-      font-family: 'DM Sans', sans-serif;
-      font-size: 15px;
-      outline: none;
-      transition: border-color 0.2s, box-shadow 0.2s;
-      -webkit-appearance: none;
+      width:100%; padding:13px 18px 13px 46px; border:1.5px solid var(--border); border-radius:50px;
+      background:var(--card); color:var(--text); font-family:'DM Sans',sans-serif; font-size:15px;
+      outline:none; transition:border-color 0.2s,box-shadow 0.2s; -webkit-appearance:none;
     }
-    .search-bar input:focus {
-      border-color: var(--primary);
-      box-shadow: 0 0 0 4px var(--shadow);
-    }
-    .search-bar .icon {
-      position: absolute;
-      left: 16px; top: 50%;
-      transform: translateY(-50%);
-      font-size: 17px;
-      pointer-events: none;
-    }
-    .filter-tabs {
-      display: flex;
-      gap: 8px;
-      flex-wrap: wrap;
-    }
+    .search-bar input:focus { border-color:var(--primary); box-shadow:0 0 0 4px var(--shadow); }
+    .search-bar .icon { position:absolute; left:16px; top:50%; transform:translateY(-50%); font-size:17px; pointer-events:none; }
+    .filter-tabs { display:flex; gap:8px; flex-wrap:wrap; }
     .filter-tab {
-      padding: 10px 16px;
-      border: 1.5px solid var(--border);
-      border-radius: 50px;
-      background: var(--card);
-      color: var(--text);
-      font-family: 'DM Sans', sans-serif;
-      font-size: 13px;
-      font-weight: 500;
-      cursor: pointer;
-      transition: all 0.2s;
-      white-space: nowrap;
-      -webkit-tap-highlight-color: transparent;
+      padding:10px 16px; border:1.5px solid var(--border); border-radius:50px; background:var(--card);
+      color:var(--text); font-family:'DM Sans',sans-serif; font-size:13px; font-weight:500;
+      cursor:pointer; transition:all 0.2s; white-space:nowrap; -webkit-tap-highlight-color:transparent;
     }
-    .filter-tab:hover, .filter-tab:active { border-color: var(--primary); color: var(--primary); }
-    .filter-tab.active { background: var(--primary); border-color: var(--primary); color: white; }
+    .filter-tab:hover,.filter-tab:active { border-color:var(--primary); color:var(--primary); }
+    .filter-tab.active { background:var(--primary); border-color:var(--primary); color:white; }
 
-    /* === STOCK PILL === */
-    .stock-pill {
-      display: inline-block;
-      font-size: 10px; font-weight: 700;
-      letter-spacing: 0.8px;
-      padding: 3px 8px;
-      border-radius: 50px;
-      margin-left: 4px;
+    /* ── SORT & TOOLBAR ── */
+    .toolbar {
+      max-width:1100px; margin:0 auto 24px; padding:0 40px;
+      display:flex; align-items:center; justify-content:space-between; gap:12px; flex-wrap:wrap;
     }
-    .stock-pill.low { background: #fff3cd; color: #856404; }
-    .stock-pill.last { background: #fde8e8; color: #c0392b; }
+    .sort-group { display:flex; align-items:center; gap:8px; flex-wrap:wrap; }
+    .sort-label { font-size:12px; font-weight:600; color:var(--muted); text-transform:uppercase; letter-spacing:1px; white-space:nowrap; }
+    .sort-btn {
+      padding:8px 14px; border:1.5px solid var(--border); border-radius:50px; background:var(--card);
+      color:var(--text); font-family:'DM Sans',sans-serif; font-size:12px; font-weight:500;
+      cursor:pointer; transition:all 0.2s; display:flex; align-items:center; gap:5px; white-space:nowrap;
+      -webkit-tap-highlight-color:transparent;
+    }
+    .sort-btn:hover { border-color:var(--primary); color:var(--primary); }
+    .sort-btn.active { background:var(--primary); border-color:var(--primary); color:white; }
+    .sort-btn .arrow { font-size:10px; transition:transform 0.2s; }
+    .result-count { font-size:13px; color:var(--muted); white-space:nowrap; }
 
-    /* === MENU === */
-    .menu-section {
-      max-width: 1100px;
-      margin: auto;
-      padding: 0 40px 50px;
-    }
-    .section-header {
-      display: flex;
-      align-items: baseline;
-      gap: 12px;
-      margin-bottom: 22px;
-    }
-    .section-header h3 {
-      font-family: 'Fraunces', serif;
-      font-size: 26px; font-weight: 700;
-    }
-    .section-header .count { color: var(--muted); font-size: 14px; }
-    .menu-grid {
-      display: grid;
-      grid-template-columns: repeat(auto-fill, minmax(260px, 1fr));
-      gap: 20px;
-    }
+    /* ── STOCK PILL ── */
+    .stock-pill { display:inline-block; font-size:10px; font-weight:700; letter-spacing:0.8px; padding:3px 8px; border-radius:50px; margin-left:4px; }
+    .stock-pill.low { background:#fff3cd; color:#856404; }
+    .stock-pill.last { background:#fde8e8; color:#c0392b; }
+
+    /* ── MENU ── */
+    .menu-section { max-width:1100px; margin:auto; padding:0 40px 50px; }
+    .section-header { display:flex; align-items:center; gap:12px; margin-bottom:22px; justify-content:space-between; }
+    .section-header h3 { font-family:'Fraunces',serif; font-size:26px; font-weight:700; }
+
+    .menu-grid { display:grid; grid-template-columns:repeat(auto-fill,minmax(260px,1fr)); gap:20px; }
     .menu-card {
-      background: var(--card);
-      border: 1.5px solid var(--border);
-      border-radius: 20px;
-      overflow: hidden;
-      transition: all 0.3s cubic-bezier(0.34, 1.56, 0.64, 1);
-      position: relative;
-      -webkit-tap-highlight-color: transparent;
+      background:var(--card); border:1.5px solid var(--border); border-radius:20px; overflow:hidden;
+      transition:all 0.3s cubic-bezier(0.34,1.56,0.64,1); position:relative; -webkit-tap-highlight-color:transparent;
     }
-    .menu-card:not(.out-of-stock) { cursor: pointer; }
-    .menu-card:not(.out-of-stock):hover {
-      transform: translateY(-6px);
-      box-shadow: 0 18px 50px var(--shadow);
-      border-color: var(--primary);
-    }
-    .menu-card.out-of-stock { opacity: 0.5; filter: grayscale(0.7); pointer-events: none; }
+    .menu-card:not(.out-of-stock) { cursor:pointer; }
+    .menu-card:not(.out-of-stock):hover { transform:translateY(-6px); box-shadow:0 18px 50px var(--shadow); border-color:var(--primary); }
+    .menu-card.out-of-stock { opacity:0.5; filter:grayscale(0.7); pointer-events:none; }
     .out-of-stock-badge {
-      position: absolute; top: 10px; right: 10px;
-      background: #222; color: white;
-      font-size: 9px; font-weight: 700;
-      letter-spacing: 1px; text-transform: uppercase;
-      padding: 4px 10px; border-radius: 50px;
-      z-index: 5; display: none;
+      position:absolute; top:10px; right:10px; background:#222; color:white;
+      font-size:9px; font-weight:700; letter-spacing:1px; text-transform:uppercase;
+      padding:4px 10px; border-radius:50px; z-index:5; display:none;
     }
-    .menu-card.out-of-stock .out-of-stock-badge { display: block; }
+    .menu-card.out-of-stock .out-of-stock-badge { display:block; }
     .card-emoji-wrap {
-      height: 110px;
-      display: flex; align-items: center; justify-content: center;
-      background: linear-gradient(135deg, #fff8f0, #fff0e8);
-      font-size: 54px; position: relative; overflow: hidden;
+      height:110px; display:flex; align-items:center; justify-content:center;
+      background:linear-gradient(135deg,#fff8f0,#fff0e8); font-size:54px; position:relative; overflow:hidden;
     }
-    body.dark .card-emoji-wrap { background: linear-gradient(135deg, #1e1a16, #241c16); }
+    body.dark .card-emoji-wrap { background:linear-gradient(135deg,#1e1a16,#241c16); }
     .card-emoji-wrap::after {
-      content: ''; position: absolute; bottom: 0; left: 0; right: 0;
-      height: 36px; background: linear-gradient(transparent, var(--card));
+      content:''; position:absolute; bottom:0; left:0; right:0; height:36px;
+      background:linear-gradient(transparent,var(--card));
     }
-    .card-emoji { transition: transform 0.3s; display: inline-block; }
-    .menu-card:not(.out-of-stock):hover .card-emoji { transform: scale(1.2) rotate(5deg); }
-    .card-body { padding: 12px 16px 16px; }
+    .card-emoji { transition:transform 0.3s; display:inline-block; }
+    .menu-card:not(.out-of-stock):hover .card-emoji { transform:scale(1.2) rotate(5deg); }
+    .card-body { padding:12px 16px 16px; }
     .card-tag {
-      font-size: 10px; font-weight: 700;
-      letter-spacing: 1.5px; text-transform: uppercase;
-      color: var(--primary); margin-bottom: 4px;
-      display: flex; align-items: center; justify-content: space-between;
+      font-size:10px; font-weight:700; letter-spacing:1.5px; text-transform:uppercase;
+      color:var(--primary); margin-bottom:4px; display:flex; align-items:center; justify-content:space-between;
     }
-    .card-name { font-family: 'Fraunces', serif; font-size: 17px; font-weight: 700; margin-bottom: 4px; }
-    .card-desc { font-size: 12px; color: var(--muted); line-height: 1.5; margin-bottom: 12px; }
-    .card-footer { display: flex; align-items: center; justify-content: space-between; gap: 8px; }
-    .card-price {
-      font-family: 'Fraunces', serif; font-size: 19px; font-weight: 900;
-      color: var(--primary); flex-shrink: 0;
-    }
-    .card-price span { font-size: 11px; font-weight: 500; color: var(--muted); font-family: 'DM Sans', sans-serif; }
-    .qty-controls { display: flex; align-items: center; gap: 6px; }
-    .qty-btn {
-      width: 32px; height: 32px; border-radius: 50%;
-      border: 1.5px solid var(--border);
-      background: var(--bg); color: var(--text);
-      font-size: 18px; font-weight: 700; cursor: pointer;
-      display: flex; align-items: center; justify-content: center;
-      transition: all 0.15s; flex-shrink: 0;
-      -webkit-tap-highlight-color: transparent;
-    }
-    .qty-btn:hover, .qty-btn:active { border-color: var(--primary); color: var(--primary); }
-    .qty-btn.minus:hover { border-color: #c0392b; color: #c0392b; }
-    .qty-display { font-weight: 700; font-size: 15px; min-width: 22px; text-align: center; }
-    .add-btn {
-      background: var(--text); color: var(--bg);
-      border: none; border-radius: 50px;
-      padding: 9px 15px;
-      font-family: 'DM Sans', sans-serif;
-      font-weight: 600; font-size: 13px; cursor: pointer;
-      transition: all 0.2s; white-space: nowrap;
-      -webkit-tap-highlight-color: transparent;
-    }
-    .add-btn:hover, .add-btn:active { background: var(--primary); }
-    .veg-dot {
-      display: inline-block; width: 7px; height: 7px;
-      border-radius: 50%; margin-right: 4px; flex-shrink: 0;
-    }
-    .veg { background: var(--green); }
-    .non-veg { background: var(--primary); }
+    .card-name { font-family:'Fraunces',serif; font-size:17px; font-weight:700; margin-bottom:4px; }
+    .card-desc { font-size:12px; color:var(--muted); line-height:1.5; margin-bottom:12px; }
 
-    /* === ORDER SECTION === */
-    .order-wrapper { max-width: 1100px; margin: 0 auto 50px; padding: 0 40px; }
+    /* MOBILE-FIXED card footer — stacks on narrow cards */
+    .card-footer {
+      display:flex; align-items:center; justify-content:space-between; gap:8px;
+      flex-wrap:nowrap;
+    }
+    .card-price { font-family:'Fraunces',serif; font-size:19px; font-weight:900; color:var(--primary); flex-shrink:0; }
+    .card-price span { font-size:11px; font-weight:500; color:var(--muted); font-family:'DM Sans',sans-serif; }
+    .qty-controls { display:flex; align-items:center; gap:4px; }
+    .qty-btn {
+      width:32px; height:32px; border-radius:50%; border:1.5px solid var(--border);
+      background:var(--bg); color:var(--text); font-size:18px; font-weight:700; cursor:pointer;
+      display:flex; align-items:center; justify-content:center; transition:all 0.15s; flex-shrink:0;
+      -webkit-tap-highlight-color:transparent;
+    }
+    .qty-btn:hover,.qty-btn:active { border-color:var(--primary); color:var(--primary); }
+    .qty-btn.minus:hover { border-color:#c0392b; color:#c0392b; }
+    .qty-display { font-weight:700; font-size:15px; min-width:20px; text-align:center; }
+    .add-btn {
+      background:var(--text); color:var(--bg); border:none; border-radius:50px;
+      padding:9px 14px; font-family:'DM Sans',sans-serif; font-weight:600; font-size:13px;
+      cursor:pointer; transition:all 0.2s; white-space:nowrap; flex-shrink:0;
+      -webkit-tap-highlight-color:transparent;
+    }
+    .add-btn:hover,.add-btn:active { background:var(--primary); }
+    .veg-dot { display:inline-block; width:7px; height:7px; border-radius:50%; margin-right:4px; flex-shrink:0; }
+    .veg { background:var(--green); }
+    .non-veg { background:var(--primary); }
+
+    /* ── ORDER SECTION ── */
+    .order-wrapper { max-width:1100px; margin:0 auto 50px; padding:0 40px; }
     .order-card {
-      background: var(--card); border: 1.5px solid var(--border);
-      border-radius: 24px; padding: 36px; text-align: center;
-      position: relative; overflow: hidden;
+      background:var(--card); border:1.5px solid var(--border); border-radius:24px;
+      padding:36px; text-align:center; position:relative; overflow:hidden;
     }
     .order-card::before {
-      content: ''; position: absolute; top: -60px; right: -60px;
-      width: 180px; height: 180px;
-      background: radial-gradient(circle, var(--shadow) 0%, transparent 70%);
-      pointer-events: none;
+      content:''; position:absolute; top:-60px; right:-60px; width:180px; height:180px;
+      background:radial-gradient(circle,var(--shadow) 0%,transparent 70%); pointer-events:none;
     }
-    .order-card h3 { font-family: 'Fraunces', serif; font-size: 26px; margin-bottom: 6px; }
-    .order-card > p { color: var(--muted); margin-bottom: 20px; font-size: 14px; }
+    .order-card h3 { font-family:'Fraunces',serif; font-size:26px; margin-bottom:6px; }
+    .order-card > p { color:var(--muted); margin-bottom:20px; font-size:14px; }
     .gst-info-chip {
-      display: inline-flex; align-items: center; gap: 6px;
-      background: #e8f5e9; color: var(--green);
-      border-radius: 50px; padding: 6px 14px;
-      font-size: 12px; font-weight: 600; margin-bottom: 18px;
+      display:inline-flex; align-items:center; gap:6px; background:#e8f5e9; color:var(--green);
+      border-radius:50px; padding:6px 14px; font-size:12px; font-weight:600; margin-bottom:18px;
     }
-    body.dark .gst-info-chip { background: #1a2e1c; }
+    body.dark .gst-info-chip { background:#1a2e1c; }
     .cart-summary {
-      background: var(--bg); border-radius: 16px;
-      padding: 18px; margin-bottom: 18px; text-align: left;
-      min-height: 80px; border: 1px dashed var(--border);
+      background:var(--bg); border-radius:16px; padding:18px; margin-bottom:18px;
+      text-align:left; min-height:80px; border:1px dashed var(--border);
     }
-    .cart-empty { text-align: center; color: var(--muted); padding: 14px 0; font-size: 14px; }
+    .cart-empty { text-align:center; color:var(--muted); padding:14px 0; font-size:14px; }
     .cart-item {
-      display: grid; grid-template-columns: 1fr auto auto;
-      align-items: center; gap: 8px;
-      padding: 8px 0; border-bottom: 1px solid var(--border);
-      font-size: 14px; animation: slideIn 0.3s ease;
+      display:grid; grid-template-columns:1fr auto auto; align-items:center; gap:8px;
+      padding:8px 0; border-bottom:1px solid var(--border); font-size:14px; animation:slideIn 0.3s ease;
     }
-    @keyframes slideIn { from { opacity: 0; transform: translateX(-10px); } to { opacity: 1; transform: translateX(0); } }
-    .cart-item:last-child { border-bottom: none; }
-    .cart-item-name { font-weight: 500; font-size: 13px; }
-    .cart-item-qty { color: var(--muted); font-size: 12px; white-space: nowrap; }
-    .cart-item-price { font-weight: 700; white-space: nowrap; font-size: 13px; }
-    .gst-breakdown { margin-top: 12px; padding-top: 12px; border-top: 2px solid var(--border); font-size: 14px; }
-    .gst-line { display: flex; justify-content: space-between; padding: 3px 0; color: var(--muted); }
-    .gst-line.subtotal { color: var(--text); font-weight: 600; margin-bottom: 3px; }
+    @keyframes slideIn { from{opacity:0;transform:translateX(-10px)} to{opacity:1;transform:translateX(0)} }
+    .cart-item:last-child { border-bottom:none; }
+    .cart-item-name { font-weight:500; font-size:13px; }
+    .cart-item-qty { color:var(--muted); font-size:12px; white-space:nowrap; }
+    .cart-item-price { font-weight:700; white-space:nowrap; font-size:13px; }
+    .gst-breakdown { margin-top:12px; padding-top:12px; border-top:2px solid var(--border); font-size:14px; }
+    .gst-line { display:flex; justify-content:space-between; padding:3px 0; color:var(--muted); }
+    .gst-line.subtotal { color:var(--text); font-weight:600; margin-bottom:3px; }
     .gst-line.total {
-      color: var(--text); font-family: 'Fraunces', serif;
-      font-size: 19px; font-weight: 900;
-      margin-top: 6px; padding-top: 6px; border-top: 1px solid var(--border);
+      color:var(--text); font-family:'Fraunces',serif; font-size:19px; font-weight:900;
+      margin-top:6px; padding-top:6px; border-top:1px solid var(--border);
     }
     .gst-badge {
-      background: #e8f5e9; color: var(--green);
-      font-family: 'DM Sans', sans-serif; font-size: 10px; font-weight: 700;
-      padding: 2px 8px; border-radius: 50px; vertical-align: middle; margin-left: 5px;
+      background:#e8f5e9; color:var(--green); font-family:'DM Sans',sans-serif;
+      font-size:10px; font-weight:700; padding:2px 8px; border-radius:50px; vertical-align:middle; margin-left:5px;
     }
-    body.dark .gst-badge { background: #1a2e1c; }
+    body.dark .gst-badge { background:#1a2e1c; }
     .place-order-btn {
-      background: linear-gradient(135deg, var(--primary), var(--primary-light));
-      color: white; border: none; border-radius: 14px;
-      padding: 16px 36px; font-family: 'Fraunces', serif;
-      font-size: 19px; font-weight: 700; cursor: pointer;
-      transition: all 0.3s; width: 100%; max-width: 360px;
-      box-shadow: 0 8px 30px var(--shadow); position: relative; overflow: hidden;
-      -webkit-tap-highlight-color: transparent;
+      background:linear-gradient(135deg,var(--primary),var(--primary-light)); color:white; border:none;
+      border-radius:14px; padding:16px 36px; font-family:'Fraunces',serif; font-size:19px; font-weight:700;
+      cursor:pointer; transition:all 0.3s; width:100%; max-width:360px;
+      box-shadow:0 8px 30px var(--shadow); position:relative; overflow:hidden;
+      -webkit-tap-highlight-color:transparent;
     }
-    .place-order-btn:disabled { background: linear-gradient(135deg, #aaa, #bbb); cursor: not-allowed; box-shadow: none; }
-    .place-order-btn:not(:disabled):hover { transform: scale(1.03); box-shadow: 0 12px 40px var(--shadow); }
-    .place-order-btn::after {
-      content: ''; position: absolute; inset: 0;
-      background: linear-gradient(90deg, transparent, rgba(255,255,255,0.2), transparent);
-      transform: translateX(-100%);
-    }
-    .place-order-btn:not(:disabled):hover::after { animation: shimmer 0.6s ease; }
-    @keyframes shimmer { to { transform: translateX(100%); } }
+    .place-order-btn:disabled { background:linear-gradient(135deg,#aaa,#bbb); cursor:not-allowed; box-shadow:none; }
+    .place-order-btn:not(:disabled):hover { transform:scale(1.03); box-shadow:0 12px 40px var(--shadow); }
+    .place-order-btn::after { content:''; position:absolute; inset:0; background:linear-gradient(90deg,transparent,rgba(255,255,255,0.2),transparent); transform:translateX(-100%); }
+    .place-order-btn:not(:disabled):hover::after { animation:shimmer 0.6s ease; }
+    @keyframes shimmer { to{transform:translateX(100%)} }
     .order-locked-msg {
-      display: none; margin-top: 14px;
-      background: #fff3cd; color: #856404;
-      border-radius: 12px; padding: 12px 18px;
-      font-size: 13px; font-weight: 600;
+      display:none; margin-top:14px; background:#fff3cd; color:#856404;
+      border-radius:12px; padding:12px 18px; font-size:13px; font-weight:600;
     }
-    body.dark .order-locked-msg { background: #2a2010; color: #f5c842; }
+    body.dark .order-locked-msg { background:#2a2010; color:#f5c842; }
     .token-section {
-      display: none; margin-top: 28px; padding: 28px;
-      background: linear-gradient(135deg, var(--primary), #c23a10);
-      border-radius: 20px; color: white;
-      position: relative; overflow: hidden;
-      animation: tokenReveal 0.5s cubic-bezier(0.34, 1.56, 0.64, 1);
+      display:none; margin-top:28px; padding:28px;
+      background:linear-gradient(135deg,var(--primary),#c23a10); border-radius:20px;
+      color:white; position:relative; overflow:hidden;
+      animation:tokenReveal 0.5s cubic-bezier(0.34,1.56,0.64,1);
     }
-    @keyframes tokenReveal { from { opacity: 0; transform: scale(0.8); } to { opacity: 1; transform: scale(1); } }
-    .token-section::before {
-      content: '🎉'; position: absolute; font-size: 110px;
-      opacity: 0.1; right: -20px; top: -20px;
-    }
-    .token-label { font-size: 12px; letter-spacing: 2px; text-transform: uppercase; opacity: 0.8; margin-bottom: 8px; }
-    .token-number {
-      font-family: 'Fraunces', serif; font-size: 66px;
-      font-weight: 900; line-height: 1; margin-bottom: 12px;
-      text-shadow: 0 4px 20px rgba(0,0,0,0.3);
-    }
+    @keyframes tokenReveal { from{opacity:0;transform:scale(0.8)} to{opacity:1;transform:scale(1)} }
+    .token-section::before { content:''; position:absolute; font-size:110px; opacity:0.1; right:-20px; top:-20px; }
+    .token-label { font-size:12px; letter-spacing:2px; text-transform:uppercase; opacity:0.8; margin-bottom:8px; }
+    .token-number { font-family:'Fraunces',serif; font-size:66px; font-weight:900; line-height:1; margin-bottom:12px; text-shadow:0 4px 20px rgba(0,0,0,0.3); }
     .token-status {
-      display: inline-flex; align-items: center; gap: 8px;
-      background: rgba(255,255,255,0.2); border-radius: 50px;
-      padding: 8px 18px; font-weight: 600; font-size: 14px;
+      display:inline-flex; align-items:center; gap:8px; background:rgba(255,255,255,0.2);
+      border-radius:50px; padding:8px 18px; font-weight:600; font-size:14px;
     }
-    .status-dot {
-      width: 9px; height: 9px; border-radius: 50%;
-      background: var(--accent); animation: pulse 1.5s ease-in-out infinite;
-    }
-    @keyframes pulse { 0%, 100% { opacity: 1; transform: scale(1); } 50% { opacity: 0.5; transform: scale(1.5); } }
+    .status-dot { width:9px; height:9px; border-radius:50%; background:var(--accent); animation:pulse 1.5s ease-in-out infinite; }
+    @keyframes pulse { 0%,100%{opacity:1;transform:scale(1)} 50%{opacity:0.5;transform:scale(1.5)} }
 
-    /* === LOADING === */
-    .loading-overlay {
-      display: none; position: fixed; inset: 0;
-      background: rgba(0,0,0,0.5); z-index: 1000;
-      align-items: center; justify-content: center;
-      backdrop-filter: blur(4px);
-    }
-    .loading-overlay.show { display: flex; }
-    .spinner-box {
-      background: var(--card); border-radius: 24px;
-      padding: 44px; text-align: center;
-      animation: popIn 0.3s cubic-bezier(0.34, 1.56, 0.64, 1);
-      max-width: 90vw;
-    }
-    @keyframes popIn { from { opacity: 0; transform: scale(0.7); } to { opacity: 1; transform: scale(1); } }
-    .spinner {
-      width: 56px; height: 56px; border: 4px solid var(--border);
-      border-top-color: var(--primary); border-radius: 50%;
-      animation: spin 0.8s linear infinite; margin: 0 auto 18px;
-    }
-    @keyframes spin { to { transform: rotate(360deg); } }
-    .spinner-emoji { font-size: 36px; animation: spinEmoji 2s ease-in-out infinite; display: block; margin-bottom: 14px; }
-    @keyframes spinEmoji { 0%, 100% { transform: rotate(-10deg); } 50% { transform: rotate(10deg); } }
-    .spinner-box p { font-family: 'Fraunces', serif; font-size: 18px; font-weight: 700; margin-bottom: 6px; }
-    .spinner-box small { color: var(--muted); }
+    /* ── LOADING ── */
+    .loading-overlay { display:none; position:fixed; inset:0; background:rgba(0,0,0,0.5); z-index:1000; align-items:center; justify-content:center; backdrop-filter:blur(4px); }
+    .loading-overlay.show { display:flex; }
+    .spinner-box { background:var(--card); border-radius:24px; padding:44px; text-align:center; animation:popIn 0.3s cubic-bezier(0.34,1.56,0.64,1); max-width:90vw; }
+    @keyframes popIn { from{opacity:0;transform:scale(0.7)} to{opacity:1;transform:scale(1)} }
+    .spinner { width:56px; height:56px; border:4px solid var(--border); border-top-color:var(--primary); border-radius:50%; animation:spin 0.8s linear infinite; margin:0 auto 18px; }
+    @keyframes spin { to{transform:rotate(360deg)} }
+    .spinner-emoji { font-size:36px; animation:spinEmoji 2s ease-in-out infinite; display:block; margin-bottom:14px; }
+    @keyframes spinEmoji { 0%,100%{transform:rotate(-10deg)} 50%{transform:rotate(10deg)} }
+    .spinner-box p { font-family:'Fraunces',serif; font-size:18px; font-weight:700; margin-bottom:6px; }
+    .spinner-box small { color:var(--muted); }
 
-    /* === TOAST === */
+    /* ── TOAST ── */
     .toast {
-      position: fixed; bottom: 24px; left: 50%;
-      transform: translateX(-50%) translateY(100px);
-      background: var(--text); color: var(--bg);
-      padding: 12px 24px; border-radius: 50px;
-      font-weight: 600; font-size: 13px; z-index: 9998;
-      transition: transform 0.4s cubic-bezier(0.34, 1.56, 0.64, 1);
-      white-space: nowrap; max-width: 88vw;
-      overflow: hidden; text-overflow: ellipsis;
+      position:fixed; bottom:24px; left:50%; transform:translateX(-50%) translateY(100px);
+      background:var(--text); color:var(--bg); padding:12px 24px; border-radius:50px;
+      font-weight:600; font-size:13px; z-index:9998; transition:transform 0.4s cubic-bezier(0.34,1.56,0.64,1);
+      white-space:nowrap; max-width:88vw; overflow:hidden; text-overflow:ellipsis;
     }
-    .toast.show { transform: translateX(-50%) translateY(0); }
+    .toast.show { transform:translateX(-50%) translateY(0); }
 
-    /* === REFRESH MODAL === */
-    .modal-overlay {
-      display: none; position: fixed; inset: 0;
-      background: rgba(0,0,0,0.6); z-index: 2000;
-      align-items: center; justify-content: center;
-      backdrop-filter: blur(6px); padding: 16px;
-    }
-    .modal-overlay.show { display: flex; }
-    .modal-box {
-      background: var(--card); border-radius: 24px;
-      padding: 40px 32px; text-align: center;
-      max-width: 400px; width: 100%;
-      border: 1.5px solid var(--border);
-      animation: popIn 0.3s cubic-bezier(0.34, 1.56, 0.64, 1);
-    }
-    .modal-box .icon { font-size: 50px; margin-bottom: 14px; }
-    .modal-box h3 { font-family: 'Fraunces', serif; font-size: 24px; font-weight: 900; margin-bottom: 10px; }
-    .modal-box p { color: var(--muted); font-size: 14px; line-height: 1.6; margin-bottom: 24px; }
-    .modal-actions { display: flex; gap: 10px; justify-content: center; flex-wrap: wrap; }
-    .modal-btn {
-      padding: 11px 24px; border-radius: 12px;
-      font-family: 'DM Sans', sans-serif; font-size: 14px;
-      font-weight: 600; cursor: pointer; transition: all 0.2s; border: none;
-    }
-    .modal-btn.confirm { background: var(--primary); color: white; }
-    .modal-btn.confirm:hover { background: var(--primary-light); }
-    .modal-btn.cancel { background: var(--border); color: var(--text); }
+    /* ── MODAL ── */
+    .modal-overlay { display:none; position:fixed; inset:0; background:rgba(0,0,0,0.6); z-index:2000; align-items:center; justify-content:center; backdrop-filter:blur(6px); padding:16px; }
+    .modal-overlay.show { display:flex; }
+    .modal-box { background:var(--card); border-radius:24px; padding:40px 32px; text-align:center; max-width:400px; width:100%; border:1.5px solid var(--border); animation:popIn 0.3s cubic-bezier(0.34,1.56,0.64,1); }
+    .modal-box .icon { font-size:50px; margin-bottom:14px; }
+    .modal-box h3 { font-family:'Fraunces',serif; font-size:24px; font-weight:900; margin-bottom:10px; }
+    .modal-box p { color:var(--muted); font-size:14px; line-height:1.6; margin-bottom:24px; }
+    .modal-actions { display:flex; gap:10px; justify-content:center; flex-wrap:wrap; }
+    .modal-btn { padding:11px 24px; border-radius:12px; font-family:'DM Sans',sans-serif; font-size:14px; font-weight:600; cursor:pointer; transition:all 0.2s; border:none; }
+    .modal-btn.confirm { background:var(--primary); color:white; }
+    .modal-btn.confirm:hover { background:var(--primary-light); }
+    .modal-btn.cancel { background:var(--border); color:var(--text); }
 
-    /* === PARTICLES === */
-    .particle {
-      position: fixed; pointer-events: none;
-      animation: float-particle 3s ease-out forwards; z-index: 9997;
-    }
-    @keyframes float-particle {
-      0% { opacity: 1; transform: translateY(0) scale(1); }
-      100% { opacity: 0; transform: translateY(-140px) scale(0.3); }
-    }
+    /* ── PARTICLES ── */
+    .particle { position:fixed; pointer-events:none; animation:float-particle 3s ease-out forwards; z-index:9997; }
+    @keyframes float-particle { 0%{opacity:1;transform:translateY(0) scale(1)} 100%{opacity:0;transform:translateY(-140px) scale(0.3)} }
 
-    /* ════════════════════════════════
-       CHATBOT
-    ════════════════════════════════ */
+    /* ── CHATBOT ── */
     .chat-fab {
-      position: fixed; bottom: 28px; right: 24px;
-      width: 58px; height: 58px;
-      background: linear-gradient(135deg, var(--primary), var(--primary-light));
-      border-radius: 50%; border: none; cursor: pointer;
-      box-shadow: 0 6px 24px var(--shadow);
-      display: flex; align-items: center; justify-content: center;
-      font-size: 26px; z-index: 800;
-      transition: all 0.3s cubic-bezier(0.34, 1.56, 0.64, 1);
-      -webkit-tap-highlight-color: transparent;
+      position:fixed; bottom:28px; right:24px; width:58px; height:58px;
+      background:linear-gradient(135deg,var(--primary),var(--primary-light));
+      border-radius:50%; border:none; cursor:pointer; box-shadow:0 6px 24px var(--shadow);
+      display:flex; align-items:center; justify-content:center; font-size:26px; z-index:800;
+      transition:all 0.3s cubic-bezier(0.34,1.56,0.64,1); -webkit-tap-highlight-color:transparent;
     }
-    .chat-fab:hover { transform: scale(1.12); box-shadow: 0 10px 32px var(--shadow); }
+    .chat-fab:hover { transform:scale(1.12); box-shadow:0 10px 32px var(--shadow); }
     .chat-fab .badge {
-      position: absolute; top: -4px; right: -4px;
-      background: var(--accent); color: var(--text);
-      border-radius: 50%; width: 18px; height: 18px;
-      font-size: 10px; font-weight: 800;
-      display: flex; align-items: center; justify-content: center;
-      animation: pulse 2s infinite;
+      position:absolute; top:-4px; right:-4px; background:var(--accent); color:var(--text);
+      border-radius:50%; width:18px; height:18px; font-size:10px; font-weight:800;
+      display:flex; align-items:center; justify-content:center; animation:pulse 2s infinite;
     }
-
     .chat-window {
-      position: fixed; bottom: 100px; right: 24px;
-      width: 360px; max-height: 520px;
-      background: var(--card);
-      border-radius: 24px;
-      border: 1.5px solid var(--border);
-      box-shadow: 0 20px 60px rgba(0,0,0,0.18);
-      display: flex; flex-direction: column;
-      z-index: 800;
-      transform: scale(0.8) translateY(20px);
-      opacity: 0;
-      pointer-events: none;
-      transition: all 0.3s cubic-bezier(0.34, 1.56, 0.64, 1);
-      overflow: hidden;
+      position:fixed; bottom:100px; right:24px; width:370px; max-height:560px;
+      background:var(--card); border-radius:24px; border:1.5px solid var(--border);
+      box-shadow:0 20px 60px rgba(0,0,0,0.18); display:flex; flex-direction:column; z-index:800;
+      transform:scale(0.8) translateY(20px); opacity:0; pointer-events:none;
+      transition:all 0.3s cubic-bezier(0.34,1.56,0.64,1); overflow:hidden;
     }
-    .chat-window.open {
-      transform: scale(1) translateY(0);
-      opacity: 1;
-      pointer-events: all;
-    }
-
+    .chat-window.open { transform:scale(1) translateY(0); opacity:1; pointer-events:all; }
     .chat-header {
-      background: linear-gradient(135deg, var(--primary), #c23a10);
-      padding: 16px 20px;
-      display: flex; align-items: center; gap: 12px;
-      flex-shrink: 0;
+      background:linear-gradient(135deg,var(--primary),#c23a10); padding:16px 20px;
+      display:flex; align-items:center; gap:12px; flex-shrink:0;
     }
-    .chat-header-avatar {
-      width: 38px; height: 38px; border-radius: 50%;
-      background: rgba(255,255,255,0.2);
-      display: flex; align-items: center; justify-content: center;
-      font-size: 20px; flex-shrink: 0;
-    }
-    .chat-header-info { flex: 1; }
-    .chat-header-info strong { color: white; font-size: 15px; display: block; }
-    .chat-header-info span { color: rgba(255,255,255,0.75); font-size: 11px; }
-    .chat-header-status {
-      width: 8px; height: 8px; border-radius: 50%;
-      background: #4ade80; flex-shrink: 0;
-      box-shadow: 0 0 0 2px rgba(74,222,128,0.3);
-      animation: pulse 2s infinite;
-    }
-    .chat-close {
-      background: rgba(255,255,255,0.15); border: none;
-      color: white; border-radius: 50%; width: 30px; height: 30px;
-      cursor: pointer; font-size: 16px;
-      display: flex; align-items: center; justify-content: center;
-      transition: background 0.2s; flex-shrink: 0;
-    }
-    .chat-close:hover { background: rgba(255,255,255,0.25); }
-
-    .chat-messages {
-      flex: 1; overflow-y: auto; padding: 16px;
-      display: flex; flex-direction: column; gap: 12px;
-      scroll-behavior: smooth;
-    }
-    .chat-messages::-webkit-scrollbar { width: 4px; }
-    .chat-messages::-webkit-scrollbar-track { background: transparent; }
-    .chat-messages::-webkit-scrollbar-thumb { background: var(--border); border-radius: 2px; }
-
-    .chat-bubble {
-      max-width: 82%;
-      padding: 10px 14px;
-      border-radius: 16px;
-      font-size: 13.5px;
-      line-height: 1.5;
-      animation: bubbleIn 0.25s ease;
-    }
-    @keyframes bubbleIn { from { opacity: 0; transform: translateY(8px); } to { opacity: 1; transform: translateY(0); } }
-    .chat-bubble.bot {
-      background: var(--chat-bg);
-      color: var(--text);
-      border-bottom-left-radius: 4px;
-      align-self: flex-start;
-    }
-    .chat-bubble.user {
-      background: var(--primary);
-      color: white;
-      border-bottom-right-radius: 4px;
-      align-self: flex-end;
-    }
-    .chat-bubble.typing {
-      background: var(--chat-bg);
-      align-self: flex-start;
-      display: flex; gap: 5px; align-items: center;
-      padding: 14px 18px;
-    }
-    .typing-dot {
-      width: 7px; height: 7px; border-radius: 50%;
-      background: var(--muted);
-      animation: typingBounce 1.2s ease infinite;
-    }
-    .typing-dot:nth-child(2) { animation-delay: 0.2s; }
-    .typing-dot:nth-child(3) { animation-delay: 0.4s; }
-    @keyframes typingBounce { 0%, 60%, 100% { transform: translateY(0); } 30% { transform: translateY(-6px); } }
-
-    .chat-quick {
-      padding: 8px 16px 12px;
-      display: flex; gap: 7px; flex-wrap: wrap; flex-shrink: 0;
-    }
+    .chat-header-avatar { width:38px; height:38px; border-radius:50%; background:rgba(255,255,255,0.2); display:flex; align-items:center; justify-content:center; font-size:20px; flex-shrink:0; }
+    .chat-header-info { flex:1; }
+    .chat-header-info strong { color:white; font-size:15px; display:block; }
+    .chat-header-info span { color:rgba(255,255,255,0.75); font-size:11px; }
+    .chat-header-status { width:8px; height:8px; border-radius:50%; background:#4ade80; flex-shrink:0; box-shadow:0 0 0 2px rgba(74,222,128,0.3); animation:pulse 2s infinite; }
+    .chat-close { background:rgba(255,255,255,0.15); border:none; color:white; border-radius:50%; width:30px; height:30px; cursor:pointer; font-size:16px; display:flex; align-items:center; justify-content:center; transition:background 0.2s; flex-shrink:0; }
+    .chat-close:hover { background:rgba(255,255,255,0.25); }
+    .chat-messages { flex:1; overflow-y:auto; padding:16px; display:flex; flex-direction:column; gap:10px; scroll-behavior:smooth; }
+    .chat-messages::-webkit-scrollbar { width:4px; }
+    .chat-messages::-webkit-scrollbar-thumb { background:var(--border); border-radius:2px; }
+    .chat-bubble { max-width:85%; padding:10px 14px; border-radius:16px; font-size:13.5px; line-height:1.55; animation:bubbleIn 0.25s ease; white-space:pre-wrap; word-break:break-word; }
+    @keyframes bubbleIn { from{opacity:0;transform:translateY(8px)} to{opacity:1;transform:translateY(0)} }
+    .chat-bubble.bot { background:var(--chat-bg); color:var(--text); border-bottom-left-radius:4px; align-self:flex-start; }
+    .chat-bubble.user { background:var(--primary); color:white; border-bottom-right-radius:4px; align-self:flex-end; }
+    .chat-bubble.typing { background:var(--chat-bg); align-self:flex-start; display:flex; gap:5px; align-items:center; padding:14px 18px; }
+    .typing-dot { width:7px; height:7px; border-radius:50%; background:var(--muted); animation:typingBounce 1.2s ease infinite; }
+    .typing-dot:nth-child(2) { animation-delay:0.2s; }
+    .typing-dot:nth-child(3) { animation-delay:0.4s; }
+    @keyframes typingBounce { 0%,60%,100%{transform:translateY(0)} 30%{transform:translateY(-6px)} }
+    .chat-quick { padding:8px 14px 10px; display:flex; gap:6px; flex-wrap:wrap; flex-shrink:0; border-top:1px solid var(--border); }
     .quick-btn {
-      padding: 6px 12px;
-      border: 1.5px solid var(--border);
-      border-radius: 50px;
-      background: var(--card);
-      color: var(--text);
-      font-family: 'DM Sans', sans-serif;
-      font-size: 11.5px; font-weight: 500;
-      cursor: pointer; transition: all 0.2s;
-      -webkit-tap-highlight-color: transparent;
+      padding:6px 11px; border:1.5px solid var(--border); border-radius:50px; background:var(--card);
+      color:var(--text); font-family:'DM Sans',sans-serif; font-size:11.5px; font-weight:500;
+      cursor:pointer; transition:all 0.2s; -webkit-tap-highlight-color:transparent;
     }
-    .quick-btn:hover, .quick-btn:active { border-color: var(--primary); color: var(--primary); background: var(--bg); }
-
-    .chat-input-row {
-      padding: 12px 14px;
-      border-top: 1px solid var(--border);
-      display: flex; gap: 10px; align-items: center;
-      flex-shrink: 0;
-    }
+    .quick-btn:hover,.quick-btn:active { border-color:var(--primary); color:var(--primary); background:var(--bg); }
+    .chat-input-row { padding:10px 14px; border-top:1px solid var(--border); display:flex; gap:10px; align-items:center; flex-shrink:0; }
     .chat-input {
-      flex: 1;
-      border: 1.5px solid var(--border);
-      border-radius: 50px;
-      padding: 10px 16px;
-      font-family: 'DM Sans', sans-serif;
-      font-size: 13.5px;
-      background: var(--bg);
-      color: var(--text);
-      outline: none;
-      transition: border-color 0.2s;
-      -webkit-appearance: none;
+      flex:1; border:1.5px solid var(--border); border-radius:50px; padding:10px 16px;
+      font-family:'DM Sans',sans-serif; font-size:13.5px; background:var(--bg); color:var(--text);
+      outline:none; transition:border-color 0.2s; -webkit-appearance:none;
     }
-    .chat-input:focus { border-color: var(--primary); }
+    .chat-input:focus { border-color:var(--primary); }
     .chat-send {
-      width: 38px; height: 38px; border-radius: 50%;
-      background: var(--primary); border: none; color: white;
-      font-size: 16px; cursor: pointer;
-      display: flex; align-items: center; justify-content: center;
-      transition: all 0.2s; flex-shrink: 0;
-      -webkit-tap-highlight-color: transparent;
+      width:38px; height:38px; border-radius:50%; background:var(--primary); border:none; color:white;
+      font-size:16px; cursor:pointer; display:flex; align-items:center; justify-content:center;
+      transition:all 0.2s; flex-shrink:0; -webkit-tap-highlight-color:transparent;
     }
-    .chat-send:hover { background: var(--primary-light); transform: scale(1.08); }
-    .chat-send:disabled { background: var(--border); cursor: not-allowed; transform: none; }
+    .chat-send:hover { background:var(--primary-light); transform:scale(1.08); }
+    .chat-send:disabled { background:var(--border); cursor:not-allowed; transform:none; }
 
-    /* === FOOTER === */
-    footer {
-      background: #1a1a1a; color: #e0e0e0;
-      padding: 44px 40px 28px;
-    }
-    .footer-inner {
-      max-width: 1100px; margin: auto;
-      display: grid; grid-template-columns: 2fr 1fr 1fr;
-      gap: 36px; margin-bottom: 36px;
-    }
-    .footer-brand .logo-icon-sm {
-      width: 38px; height: 38px;
-      background: linear-gradient(135deg, var(--primary), var(--accent));
-      border-radius: 10px;
-      display: flex; align-items: center; justify-content: center;
-      font-size: 18px; margin-bottom: 12px;
-    }
-    .footer-brand h3 {
-      font-family: 'Fraunces', serif; font-size: 22px;
-      color: white; margin-bottom: 10px; letter-spacing: -1px;
-    }
-    .footer-brand p { color: #9e9e9e; font-size: 13px; line-height: 1.7; max-width: 270px; }
-    .footer-beta {
-      display: inline-block; background: var(--primary); color: white;
-      font-size: 9px; font-weight: 700; letter-spacing: 1.5px;
-      text-transform: uppercase; padding: 3px 9px; border-radius: 50px;
-      margin-left: 7px; vertical-align: middle;
-    }
-    .footer-col h4 { font-weight: 700; color: white; margin-bottom: 14px; font-size: 14px; }
-    .footer-col a, .footer-col p {
-      display: block; color: #9e9e9e; font-size: 13px;
-      text-decoration: none; margin-bottom: 7px; transition: color 0.2s;
-    }
-    .footer-col a:hover { color: var(--accent); }
-    .footer-bottom {
-      max-width: 1100px; margin: auto;
-      padding-top: 22px; border-top: 1px solid #2a2a2a;
-      display: flex; justify-content: space-between; align-items: center;
-      font-size: 12px; color: #666; flex-wrap: wrap; gap: 8px;
-    }
-    .footer-bottom span { color: var(--primary); }
+    /* ── FOOTER ── */
+    footer { background:#1a1a1a; color:#e0e0e0; padding:44px 40px 28px; }
+    .footer-inner { max-width:1100px; margin:auto; display:grid; grid-template-columns:2fr 1fr 1fr; gap:36px; margin-bottom:36px; }
+    .footer-brand .logo-icon-sm { width:38px; height:38px; background:linear-gradient(135deg,var(--primary),var(--accent)); border-radius:10px; display:flex; align-items:center; justify-content:center; font-size:18px; margin-bottom:12px; }
+    .footer-brand h3 { font-family:'Fraunces',serif; font-size:22px; color:white; margin-bottom:10px; letter-spacing:-1px; }
+    .footer-brand p { color:#9e9e9e; font-size:13px; line-height:1.7; max-width:270px; }
+    .footer-beta { display:inline-block; background:var(--primary); color:white; font-size:9px; font-weight:700; letter-spacing:1.5px; text-transform:uppercase; padding:3px 9px; border-radius:50px; margin-left:7px; vertical-align:middle; }
+    .footer-col h4 { font-weight:700; color:white; margin-bottom:14px; font-size:14px; }
+    .footer-col a,.footer-col p { display:block; color:#9e9e9e; font-size:13px; text-decoration:none; margin-bottom:7px; transition:color 0.2s; }
+    .footer-col a:hover { color:var(--accent); }
+    .footer-bottom { max-width:1100px; margin:auto; padding-top:22px; border-top:1px solid #2a2a2a; display:flex; justify-content:space-between; align-items:center; font-size:12px; color:#666; flex-wrap:wrap; gap:8px; }
+    .footer-bottom span { color:var(--primary); }
 
-    /* === SCROLL REVEAL === */
-    .reveal { opacity: 0; transform: translateY(28px); transition: all 0.6s ease; }
-    .reveal.visible { opacity: 1; transform: translateY(0); }
+    /* ── SCROLL REVEAL ── */
+    .reveal { opacity:0; transform:translateY(28px); transition:all 0.6s ease; }
+    .reveal.visible { opacity:1; transform:translateY(0); }
 
-    /* ════════════════════════════════
-       RESPONSIVE — MOBILE FIRST
-    ════════════════════════════════ */
+    /* ══════════════════════════════════
+       RESPONSIVE
+    ══════════════════════════════════ */
     @media (max-width: 768px) {
-      header { padding: 12px 16px; }
-      .logo-text h1 { font-size: 22px; }
-      .logo-icon { width: 42px; height: 42px; font-size: 22px; }
-      .cart-btn { padding: 9px 14px; font-size: 13px; }
-      .cart-btn .cart-label { display: none; } /* hide "Cart" text on mobile */
+      header { padding:12px 16px; }
+      .logo-text h1 { font-size:22px; }
+      .logo-icon { width:42px; height:42px; font-size:22px; }
+      .cart-btn { padding:9px 14px; font-size:13px; }
+      .cart-btn .cart-label { display:none; }
 
-      .hero { grid-template-columns: 1fr; gap: 16px; padding: 28px 16px 24px; }
-      .hero-emoji { font-size: 70px; text-align: center; }
-      .hero h2 { font-size: clamp(28px, 7vw, 44px); }
-      .hero p { font-size: 14px; }
+      .hero { grid-template-columns:1fr; gap:16px; padding:28px 16px 24px; }
+      .hero-emoji { font-size:70px; text-align:center; }
+      .hero h2 { font-size:clamp(28px,7vw,44px); }
+      .hero p { font-size:14px; }
 
-      .controls { padding: 0 16px; flex-direction: column; gap: 10px; }
-      .filter-tabs { gap: 6px; }
-      .filter-tab { padding: 8px 13px; font-size: 12px; }
+      .controls { padding:0 16px; flex-direction:column; gap:10px; margin-bottom:10px; }
+      .filter-tabs { gap:6px; overflow-x:auto; flex-wrap:nowrap; padding-bottom:4px; }
+      .filter-tab { padding:8px 13px; font-size:12px; flex-shrink:0; }
 
-      .menu-section { padding: 0 16px 40px; }
-      .menu-grid { grid-template-columns: repeat(auto-fill, minmax(160px, 1fr)); gap: 14px; }
-      .card-emoji-wrap { height: 90px; font-size: 44px; }
-      .card-name { font-size: 15px; }
-      .card-price { font-size: 16px; }
-      .add-btn { padding: 8px 12px; font-size: 12px; }
-      .qty-btn { width: 28px; height: 28px; font-size: 16px; }
+      .toolbar { padding:0 16px; }
+      .sort-btn { padding:7px 12px; font-size:11px; }
 
-      .order-wrapper { padding: 0 16px; }
-      .order-card { padding: 22px 16px; }
-      .order-card h3 { font-size: 22px; }
-      .token-number { font-size: 52px; }
+      .menu-section { padding:0 16px 40px; }
+      /* Two columns on mobile, but with proper sizing */
+      .menu-grid { grid-template-columns:1fr 1fr; gap:12px; }
 
-      .footer-inner { grid-template-columns: 1fr; gap: 20px; }
-      .footer-bottom { flex-direction: column; text-align: center; }
-      footer { padding: 36px 20px 24px; }
+      /* ── MOBILE CARD HOTFIX ──
+         On narrow cards: stack price above + Add button vertically
+         so neither gets hidden. Card body gets more room. */
+      .card-emoji-wrap { height:80px; font-size:40px; }
+      .card-body { padding:10px 12px 12px; }
+      .card-name { font-size:13px; margin-bottom:3px; }
+      .card-desc { display:none; } /* hide desc on mobile to save space */
+      .card-footer { flex-direction:column; align-items:stretch; gap:6px; }
+      .card-price { font-size:15px; }
+      .add-btn { width:100%; text-align:center; padding:8px 10px; font-size:12px; }
+      .qty-controls { width:100%; justify-content:center; }
+      .qty-btn { width:34px; height:34px; }
+      .qty-display { font-size:14px; }
 
-      /* Chat window full-width on mobile */
-      .chat-window {
-        right: 12px; left: 12px; width: auto;
-        bottom: 90px; max-height: 70vh;
-      }
-      .chat-fab { right: 16px; bottom: 20px; }
+      .order-wrapper { padding:0 16px; }
+      .order-card { padding:22px 16px; }
+      .order-card h3 { font-size:22px; }
+      .token-number { font-size:52px; }
+
+      .footer-inner { grid-template-columns:1fr; gap:20px; }
+      .footer-bottom { flex-direction:column; text-align:center; }
+      footer { padding:36px 20px 24px; }
+
+      .chat-window { right:12px; left:12px; width:auto; bottom:90px; max-height:70vh; }
+      .chat-fab { right:16px; bottom:20px; }
     }
 
-    @media (max-width: 480px) {
-      .menu-grid { grid-template-columns: 1fr 1fr; }
-      .hero-tag { font-size: 10px; }
-      .section-header h3 { font-size: 22px; }
+    @media (max-width: 380px) {
+      .menu-grid { grid-template-columns:1fr; }
+      .card-footer { flex-direction:row; }
+      .card-desc { display:none; }
+    }
+
+    /* Tablet: 3 columns */
+    @media (min-width:769px) and (max-width:1024px) {
+      .menu-grid { grid-template-columns:repeat(3,1fr); }
     }
   </style>
 </head>
@@ -849,12 +489,10 @@
 
 <div class="toast" id="toast"></div>
 
-<!-- ── CHATBOT ── -->
+<!-- CHATBOT FAB -->
 <button class="chat-fab" id="chatFab" aria-label="Open chat assistant">
-  🐼
-  <span class="badge">AI</span>
+  🐼<span class="badge">AI</span>
 </button>
-
 <div class="chat-window" id="chatWindow" role="dialog" aria-label="M3W3 Assistant">
   <div class="chat-header">
     <div class="chat-header-avatar">🐼</div>
@@ -863,23 +501,23 @@
       <span>M3W3 AI · Online</span>
     </div>
     <div class="chat-header-status"></div>
-    <button class="chat-close" id="chatClose" aria-label="Close chat">✕</button>
+    <button class="chat-close" id="chatClose" aria-label="Close">✕</button>
   </div>
   <div class="chat-messages" id="chatMessages"></div>
   <div class="chat-quick" id="chatQuick">
-    <button class="quick-btn" data-q="What's on the menu today?">📋 Menu</button>
-    <button class="quick-btn" data-q="Do you have veg options?">🥦 Veg options</button>
-    <button class="quick-btn" data-q="How does GST work?">🧾 GST info</button>
+    <button class="quick-btn" data-q="What's on the menu?">📋 Menu</button>
+    <button class="quick-btn" data-q="Show me veg options">🥦 Veg only</button>
+    <button class="quick-btn" data-q="How does GST work here?">🧾 GST</button>
     <button class="quick-btn" data-q="How do I place an order?">🛒 How to order</button>
-    <button class="quick-btn" data-q="What are the best sellers?">⭐ Best sellers</button>
-    <button class="quick-btn" data-q="Tell me about M3W3">ℹ️ About M3W3</button>
+    <button class="quick-btn" data-q="What are your best sellers?">⭐ Best sellers</button>
+    <button class="quick-btn" data-q="What's cheap and good?">💰 Budget picks</button>
+    <button class="quick-btn" data-q="Tell me about M3W3">ℹ️ About</button>
   </div>
   <div class="chat-input-row">
-    <input class="chat-input" id="chatInput" placeholder="Ask me anything…" autocomplete="off" maxlength="200">
-    <button class="chat-send" id="chatSend" aria-label="Send message">➤</button>
+    <input class="chat-input" id="chatInput" placeholder="Ask me anything…" autocomplete="off" maxlength="300">
+    <button class="chat-send" id="chatSend" aria-label="Send">➤</button>
   </div>
 </div>
-<!-- ── END CHATBOT ── -->
 
 <!-- Beta Banner -->
 <div class="beta-banner">🚧 <strong>BETA</strong> — M3W3 is in early access. Some items may go out of stock during your session.</div>
@@ -895,7 +533,7 @@
   </a>
   <div class="header-actions">
     <button class="cart-btn" id="cartBtn">
-      🛒 <span class="cart-label">Cart</span> <span class="cart-count" id="cartCount">0</span>
+      🛒 <span class="cart-label">Cart</span>&nbsp;<span class="cart-count" id="cartCount">0</span>
     </button>
     <button class="theme-btn" id="themeToggle" aria-label="Toggle theme">🌙</button>
   </div>
@@ -911,13 +549,13 @@
   <div class="hero-emoji" id="heroEmoji" aria-hidden="true">🍛</div>
 </section>
 
-<!-- Controls -->
+<!-- Search + Filters -->
 <div class="controls">
   <div class="search-bar">
     <span class="icon" aria-hidden="true">🔍</span>
-    <input type="text" id="searchInput" placeholder="Search for food…" autocomplete="off">
+    <input type="text" id="searchInput" placeholder="Search dishes…" autocomplete="off">
   </div>
-  <div class="filter-tabs" id="filterTabs" role="group" aria-label="Filter menu">
+  <div class="filter-tabs" id="filterTabs" role="group" aria-label="Filter by category">
     <button class="filter-tab active" data-filter="all">All</button>
     <button class="filter-tab" data-filter="indian">🇮🇳 Indian</button>
     <button class="filter-tab" data-filter="italian">🇮🇹 Italian</button>
@@ -927,27 +565,41 @@
   </div>
 </div>
 
+<!-- Sort Toolbar -->
+<div class="toolbar">
+  <div class="sort-group" role="group" aria-label="Sort menu">
+    <span class="sort-label">Sort:</span>
+    <button class="sort-btn active" data-sort="default" title="Default order">Default</button>
+    <button class="sort-btn" data-sort="price-asc" title="Price: Low to High">💰 Low→High</button>
+    <button class="sort-btn" data-sort="price-desc" title="Price: High to Low">💰 High→Low</button>
+    <button class="sort-btn" data-sort="name-asc" title="Name: A to Z">🔤 A→Z</button>
+    <button class="sort-btn" data-sort="name-desc" title="Name: Z to A">🔤 Z→A</button>
+    <button class="sort-btn" data-sort="time-asc" title="Fastest first">⚡ Fastest</button>
+    <button class="sort-btn" data-sort="veg-first" title="Veg items first">🟢 Veg first</button>
+  </div>
+  <span class="result-count" id="itemCount"></span>
+</div>
+
 <!-- Menu -->
 <section class="menu-section">
   <div class="section-header reveal">
     <h3>Today's Menu</h3>
-    <span class="count" id="itemCount"></span>
   </div>
   <div class="menu-grid" id="menuGrid"></div>
 </section>
 
-<!-- Order Section -->
+<!-- Order -->
 <div class="order-wrapper">
   <div class="order-card reveal">
     <h3>Your Order 🛒</h3>
-    <p>Add items from the menu — quantities update in real time</p>
+    <p>Add items from the menu — quantities and GST update in real time</p>
     <div class="gst-info-chip">✅ Prices shown are pre-GST. 5% GST added at checkout.</div>
     <div class="cart-summary" id="cartSummary">
       <div class="cart-empty">Your cart is empty — add something delicious!</div>
     </div>
     <button class="place-order-btn" id="placeOrderBtn" disabled>Place Order →</button>
     <div class="order-locked-msg" id="orderLockedMsg">
-      🔒 Order placed! You cannot place another order during this session.
+      🔒 Order placed! You cannot place another order this session.
     </div>
     <div class="token-section" id="tokenSection">
       <div class="token-label">Your Order Token</div>
@@ -981,7 +633,7 @@
       <p>📞 +91 89817 37392</p>
       <p>📞 +91 70015 27630</p>
       <p>📞 +91 62968 88154</p>
-      <p>Email : arkeshbhattacharya@gmail.com</p>
+      <p>✉️ arkeshbhattacharya@gmail.com</p>
     </div>
   </div>
   <div class="footer-bottom">
@@ -995,50 +647,57 @@ document.addEventListener('DOMContentLoaded', function () {
 
 const GST_RATE = 0.05;
 
+/* ════════════════════════════════════════════
+   MENU DATA — 40 items, all emojis verified
+   ════════════════════════════════════════════ */
 const menuItems = [
-  { id:1,  name:"Butter Chicken",       emoji:"🍗", tag:"indian",  type:"non-veg", desc:"Creamy tomato-based curry with tender chicken, best with garlic naan.",       price:220, time:"15 min" },
-  { id:2,  name:"Dal Makhani",          emoji:"🍲", tag:"indian",  type:"veg",     desc:"Slow-cooked black lentils with butter and cream. Rich and earthy.",           price:160, time:"20 min" },
-  { id:3,  name:"Paneer Tikka Masala",  emoji:"🧀", tag:"indian",  type:"veg",     desc:"Grilled cottage cheese in spiced tomato gravy. A timeless classic.",          price:190, time:"18 min" },
-  { id:4,  name:"Chicken Biryani",      emoji:"🍚", tag:"indian",  type:"non-veg", desc:"Fragrant basmati rice layered with spiced chicken and saffron.",              price:260, time:"25 min" },
-  { id:5,  name:"Veg Biryani",          emoji:"🌾", tag:"indian",  type:"veg",     desc:"Aromatic basmati with seasonal vegetables, mint and whole spices.",           price:200, time:"22 min" },
-  { id:6,  name:"Rogan Josh",           emoji:"🥘", tag:"indian",  type:"non-veg", desc:"Aromatic Kashmiri lamb curry, slow-cooked to tender perfection.",             price:280, time:"30 min" },
-  { id:7,  name:"Palak Paneer",         emoji:"🥬", tag:"indian",  type:"veg",     desc:"Cottage cheese in smooth spinach gravy. Healthy meets delicious.",            price:170, time:"15 min" },
-  { id:8,  name:"Mutton Korma",         emoji:"🍖", tag:"indian",  type:"non-veg", desc:"Tender mutton slow-braised in yoghurt, nut and spice gravy.",                 price:310, time:"35 min" },
-  { id:9,  name:"Chana Masala",         emoji:"🫛", tag:"indian",  type:"veg",     desc:"Hearty chickpeas in tangy tomato-onion masala. North Indian staple.",         price:150, time:"15 min" },
-  { id:10, name:"Fish Curry (Bengali)", emoji:"🐟", tag:"indian",  type:"non-veg", desc:"Rohu fish simmered in mustard and turmeric gravy. Bengali soul food.",        price:290, time:"25 min" },
-  { id:11, name:"Rajma Chawal",         emoji:"🥣", tag:"indian",  type:"veg",     desc:"Kidney bean curry over steamed rice. The ultimate comfort bowl.",             price:160, time:"18 min" },
-  { id:12, name:"Chicken Rezala",       emoji:"🍛", tag:"indian",  type:"non-veg", desc:"Mughlai white gravy with aromatic whole spices and rose water.",              price:250, time:"28 min" },
-  { id:13, name:"Aloo Gobi",            emoji:"🥦", tag:"indian",  type:"veg",     desc:"Dry-spiced potato and cauliflower tossed with cumin and turmeric.",           price:130, time:"12 min" },
-  { id:14, name:"Shahi Paneer",         emoji:"🍮", tag:"indian",  type:"veg",     desc:"Royal cottage cheese in a rich cashew and cream gravy.",                      price:200, time:"20 min" },
-  { id:15, name:"Egg Curry",            emoji:"🍳", tag:"indian",  type:"non-veg", desc:"Boiled eggs dunked in a bold tomato-onion spiced curry.",                     price:170, time:"15 min" },
-  { id:16, name:"Lamb Seekh Kebab",     emoji:"🥩", tag:"indian",  type:"non-veg", desc:"Minced lamb kebab grilled over charcoal, served with mint chutney.",          price:300, time:"25 min" },
-  { id:17, name:"Methi Thepla",         emoji:"🌿", tag:"indian",  type:"veg",     desc:"Soft Gujarati flatbread with fenugreek leaves. Perfect with pickle.",         price:90,  time:"10 min" },
-  { id:18, name:"Gulab Jamun",          emoji:"🟤", tag:"indian",  type:"veg",     desc:"Soft milk-solid balls soaked in rose-flavoured sugar syrup. (2 pcs)",         price:80,  time:"5 min"  },
-  { id:19, name:"Kheer",                emoji:"🍨", tag:"indian",  type:"veg",     desc:"Slow-cooked rice pudding with saffron, cardamom and crushed pistachios.",     price:90,  time:"5 min"  },
-  { id:20, name:"Masala Dosa",          emoji:"🥞", tag:"indian",  type:"veg",     desc:"Crispy rice crepe stuffed with spiced potato, served with sambar.",           price:120, time:"10 min" },
-  { id:21, name:"Pav Bhaji",            emoji:"🧆", tag:"snacks",  type:"veg",     desc:"Spiced mixed vegetable mash with buttery toasted pav rolls.",                 price:110, time:"10 min" },
-  { id:22, name:"Samosa (2 pcs)",       emoji:"🥟", tag:"snacks",  type:"veg",     desc:"Crispy pastry pockets filled with spiced potatoes and peas.",                 price:60,  time:"8 min"  },
-  { id:23, name:"Vada Pav",             emoji:"🍔", tag:"snacks",  type:"veg",     desc:"Mumbai's iconic street burger — spicy potato fritter in a soft bun.",         price:50,  time:"6 min"  },
-  { id:24, name:"Pani Puri (6 pcs)",    emoji:"🫙", tag:"snacks",  type:"veg",     desc:"Crispy hollow puris with tangy tamarind water and spiced filling.",           price:80,  time:"8 min"  },
-  { id:25, name:"Aloo Tikki Chaat",     emoji:"🥔", tag:"snacks",  type:"veg",     desc:"Crispy potato patties topped with chutneys, sev and yoghurt.",               price:90,  time:"8 min"  },
-  { id:26, name:"Chicken Kathi Roll",   emoji:"🌯", tag:"snacks",  type:"non-veg", desc:"Flaky paratha wrapped with spiced grilled chicken, onion and chutney.",       price:130, time:"12 min" },
-  { id:27, name:"Dahi Vada",            emoji:"🥛", tag:"snacks",  type:"veg",     desc:"Fluffy lentil dumplings soaked in cool yoghurt and topped with tamarind.",    price:100, time:"8 min"  },
-  { id:28, name:"Kachori (2 pcs)",      emoji:"🥐", tag:"snacks",  type:"veg",     desc:"Flaky, spiced pea-filled pastry. A Rajasthani breakfast favourite.",          price:70,  time:"8 min"  },
-  { id:29, name:"Egg Frankie",          emoji:"🌮", tag:"snacks",  type:"non-veg", desc:"Spiced scrambled egg wrapped in a thin roomali roti. Street-style.",          price:110, time:"10 min" },
-  { id:30, name:"Chole Bhature",        emoji:"🫓", tag:"snacks",  type:"veg",     desc:"Fluffy fried bread with spiced chickpea curry. North Indian soul food.",      price:140, time:"12 min" },
-  { id:31, name:"Margherita Pizza",     emoji:"🍕", tag:"italian", type:"veg",     desc:"Classic thin-crust with tomato sauce, mozzarella and fresh basil.",          price:250, time:"20 min" },
-  { id:32, name:"Pepperoni Pizza",      emoji:"🍕", tag:"italian", type:"non-veg", desc:"Loaded with pepperoni slices on a rich tomato and cheese base.",              price:320, time:"22 min" },
-  { id:33, name:"Pasta Arrabiata",      emoji:"🍝", tag:"italian", type:"veg",     desc:"Penne tossed in fiery tomato sauce with garlic and red chilli.",              price:220, time:"18 min" },
-  { id:34, name:"Garlic Bread (4 pcs)", emoji:"🥖", tag:"italian", type:"veg",     desc:"Toasted baguette slathered with herb butter. Simple and irresistible.",       price:120, time:"8 min"  },
-  { id:35, name:"Tiramisu",             emoji:"🍰", tag:"italian", type:"veg",     desc:"Classic Italian dessert with espresso-soaked ladyfingers and mascarpone.",   price:180, time:"5 min"  },
-  { id:36, name:"Mango Lassi",          emoji:"🥭", tag:"drinks",  type:"veg",     desc:"Chilled yoghurt blended with fresh Alphonso mango pulp.",                    price:80,  time:"5 min"  },
-  { id:37, name:"Masala Chai",          emoji:"☕", tag:"drinks",  type:"veg",     desc:"Warming spiced tea with ginger, cardamom and full-cream milk.",               price:40,  time:"5 min"  },
-  { id:38, name:"Nimbu Pani",           emoji:"🍋", tag:"drinks",  type:"veg",     desc:"Fresh lemon water with mint, black salt and chaat masala. Refreshing.",      price:50,  time:"3 min"  },
-  { id:39, name:"Cold Coffee",          emoji:"🧋", tag:"drinks",  type:"veg",     desc:"Blended iced coffee with milk and chocolate syrup. Cafe style.",             price:120, time:"5 min"  },
-  { id:40, name:"Aam Panna",            emoji:"🍹", tag:"drinks",  type:"veg",     desc:"Tangy raw mango cooler with cumin, mint and black salt. Summer staple.",     price:60,  time:"4 min"  },
+  // INDIAN MAINS
+  { id:1,  name:"Butter Chicken",        emoji:"🍗",  tag:"indian",  type:"non-veg", desc:"Creamy tomato-based curry with tender chicken, best with garlic naan.",      price:220, time:"15 min", mins:15 },
+  { id:2,  name:"Dal Makhani",           emoji:"🫘",  tag:"indian",  type:"veg",     desc:"Slow-cooked black lentils with butter and cream. Rich and earthy.",          price:160, time:"20 min", mins:20 },
+  { id:3,  name:"Paneer Tikka Masala",   emoji:"🧀",  tag:"indian",  type:"veg",     desc:"Grilled cottage cheese in spiced tomato gravy. A timeless classic.",         price:190, time:"18 min", mins:18 },
+  { id:4,  name:"Chicken Biryani",       emoji:"🍚",  tag:"indian",  type:"non-veg", desc:"Fragrant basmati rice layered with spiced chicken and saffron.",             price:260, time:"25 min", mins:25 },
+  { id:5,  name:"Veg Biryani",           emoji:"🌾",  tag:"indian",  type:"veg",     desc:"Aromatic basmati with seasonal vegetables, mint and whole spices.",          price:200, time:"22 min", mins:22 },
+  { id:6,  name:"Rogan Josh",            emoji:"🥘",  tag:"indian",  type:"non-veg", desc:"Aromatic Kashmiri lamb curry, slow-cooked to tender perfection.",            price:280, time:"30 min", mins:30 },
+  { id:7,  name:"Palak Paneer",          emoji:"🥬",  tag:"indian",  type:"veg",     desc:"Cottage cheese in smooth spinach gravy. Healthy meets delicious.",           price:170, time:"15 min", mins:15 },
+  { id:8,  name:"Mutton Korma",          emoji:"🍖",  tag:"indian",  type:"non-veg", desc:"Tender mutton slow-braised in yoghurt, nut and spice gravy.",                price:310, time:"35 min", mins:35 },
+  { id:9,  name:"Chana Masala",          emoji:"🫙",  tag:"indian",  type:"veg",     desc:"Hearty chickpeas in tangy tomato-onion masala. North Indian staple.",        price:150, time:"15 min", mins:15 },
+  { id:10, name:"Fish Curry (Bengali)",  emoji:"🐟",  tag:"indian",  type:"non-veg", desc:"Rohu fish simmered in mustard and turmeric gravy. Bengali soul food.",       price:290, time:"25 min", mins:25 },
+  { id:11, name:"Rajma Chawal",          emoji:"🥣",  tag:"indian",  type:"veg",     desc:"Kidney bean curry over steamed rice. The ultimate comfort bowl.",            price:160, time:"18 min", mins:18 },
+  { id:12, name:"Chicken Rezala",        emoji:"🍛",  tag:"indian",  type:"non-veg", desc:"Mughlai white gravy with aromatic whole spices and rose water.",             price:250, time:"28 min", mins:28 },
+  { id:13, name:"Aloo Gobi",             emoji:"🥦",  tag:"indian",  type:"veg",     desc:"Dry-spiced potato and cauliflower tossed with cumin and turmeric.",          price:130, time:"12 min", mins:12 },
+  { id:14, name:"Shahi Paneer",          emoji:"🍮",  tag:"indian",  type:"veg",     desc:"Royal cottage cheese in a rich cashew and cream gravy.",                     price:200, time:"20 min", mins:20 },
+  { id:15, name:"Egg Curry",             emoji:"🍳",  tag:"indian",  type:"non-veg", desc:"Boiled eggs dunked in a bold tomato-onion spiced curry.",                    price:170, time:"15 min", mins:15 },
+  { id:16, name:"Lamb Seekh Kebab",      emoji:"🥩",  tag:"indian",  type:"non-veg", desc:"Minced lamb kebab grilled over charcoal, served with mint chutney.",         price:300, time:"25 min", mins:25 },
+  { id:17, name:"Methi Thepla",          emoji:"🌿",  tag:"indian",  type:"veg",     desc:"Soft Gujarati flatbread with fenugreek leaves. Perfect with pickle.",        price:90,  time:"10 min", mins:10 },
+  { id:18, name:"Gulab Jamun",           emoji:"🍩",  tag:"indian",  type:"veg",     desc:"Soft milk-solid balls soaked in rose-flavoured sugar syrup. (2 pcs)",        price:80,  time:"5 min",  mins:5  },
+  { id:19, name:"Kheer",                 emoji:"🍨",  tag:"indian",  type:"veg",     desc:"Slow-cooked rice pudding with saffron, cardamom and crushed pistachios.",    price:90,  time:"5 min",  mins:5  },
+  { id:20, name:"Masala Dosa",           emoji:"🥞",  tag:"indian",  type:"veg",     desc:"Crispy rice crepe stuffed with spiced potato, served with sambar.",          price:120, time:"10 min", mins:10 },
+  // SNACKS
+  { id:21, name:"Pav Bhaji",             emoji:"🧆",  tag:"snacks",  type:"veg",     desc:"Spiced mixed vegetable mash with buttery toasted pav rolls.",                price:110, time:"10 min", mins:10 },
+  { id:22, name:"Samosa (2 pcs)",        emoji:"🥟",  tag:"snacks",  type:"veg",     desc:"Crispy pastry pockets filled with spiced potatoes and peas.",                price:60,  time:"8 min",  mins:8  },
+  { id:23, name:"Vada Pav",              emoji:"🍔",  tag:"snacks",  type:"veg",     desc:"Mumbai's iconic street burger — spicy potato fritter in a soft bun.",        price:50,  time:"6 min",  mins:6  },
+  { id:24, name:"Pani Puri (6 pcs)",     emoji:"🫧",  tag:"snacks",  type:"veg",     desc:"Crispy hollow puris with tangy tamarind water and spiced filling.",          price:80,  time:"8 min",  mins:8  },
+  { id:25, name:"Aloo Tikki Chaat",      emoji:"🥔",  tag:"snacks",  type:"veg",     desc:"Crispy potato patties topped with chutneys, sev and yoghurt.",              price:90,  time:"8 min",  mins:8  },
+  { id:26, name:"Chicken Kathi Roll",    emoji:"🌯",  tag:"snacks",  type:"non-veg", desc:"Flaky paratha wrapped with spiced grilled chicken, onion and chutney.",      price:130, time:"12 min", mins:12 },
+  { id:27, name:"Dahi Vada",             emoji:"🥛",  tag:"snacks",  type:"veg",     desc:"Fluffy lentil dumplings soaked in cool yoghurt and topped with tamarind.",   price:100, time:"8 min",  mins:8  },
+  { id:28, name:"Kachori (2 pcs)",       emoji:"🥐",  tag:"snacks",  type:"veg",     desc:"Flaky, spiced pea-filled pastry. A Rajasthani breakfast favourite.",         price:70,  time:"8 min",  mins:8  },
+  { id:29, name:"Egg Frankie",           emoji:"🌮",  tag:"snacks",  type:"non-veg", desc:"Spiced scrambled egg wrapped in a thin roomali roti. Street-style.",         price:110, time:"10 min", mins:10 },
+  { id:30, name:"Chole Bhature",         emoji:"🫓",  tag:"snacks",  type:"veg",     desc:"Fluffy fried bread with spiced chickpea curry. North Indian soul food.",     price:140, time:"12 min", mins:12 },
+  // ITALIAN
+  { id:31, name:"Margherita Pizza",      emoji:"🍕",  tag:"italian", type:"veg",     desc:"Classic thin-crust with tomato sauce, mozzarella and fresh basil.",         price:250, time:"20 min", mins:20 },
+  { id:32, name:"Pepperoni Pizza",       emoji:"🍕",  tag:"italian", type:"non-veg", desc:"Loaded with pepperoni slices on a rich tomato and cheese base.",             price:320, time:"22 min", mins:22 },
+  { id:33, name:"Pasta Arrabiata",       emoji:"🍝",  tag:"italian", type:"veg",     desc:"Penne tossed in fiery tomato sauce with garlic and red chilli.",             price:220, time:"18 min", mins:18 },
+  { id:34, name:"Garlic Bread (4 pcs)",  emoji:"🥖",  tag:"italian", type:"veg",     desc:"Toasted baguette slathered with herb butter. Simple and irresistible.",      price:120, time:"8 min",  mins:8  },
+  { id:35, name:"Tiramisu",              emoji:"🍰",  tag:"italian", type:"veg",     desc:"Classic Italian dessert with espresso-soaked ladyfingers and mascarpone.",  price:180, time:"5 min",  mins:5  },
+  // DRINKS
+  { id:36, name:"Mango Lassi",           emoji:"🥭",  tag:"drinks",  type:"veg",     desc:"Chilled yoghurt blended with fresh Alphonso mango pulp.",                   price:80,  time:"5 min",  mins:5  },
+  { id:37, name:"Masala Chai",           emoji:"☕",  tag:"drinks",  type:"veg",     desc:"Warming spiced tea with ginger, cardamom and full-cream milk.",              price:40,  time:"5 min",  mins:5  },
+  { id:38, name:"Nimbu Pani",            emoji:"🍋",  tag:"drinks",  type:"veg",     desc:"Fresh lemon water with mint, black salt and chaat masala. Refreshing.",     price:50,  time:"3 min",  mins:3  },
+  { id:39, name:"Cold Coffee",           emoji:"🧋",  tag:"drinks",  type:"veg",     desc:"Blended iced coffee with milk and chocolate syrup. Cafe style.",            price:120, time:"5 min",  mins:5  },
+  { id:40, name:"Aam Panna",             emoji:"🍹",  tag:"drinks",  type:"veg",     desc:"Tangy raw mango cooler with cumin, mint and black salt. Summer staple.",    price:60,  time:"4 min",  mins:4  },
 ];
 
-// Stock
+/* ── RANDOMISE STOCK ── */
 const stockData = {};
 menuItems.forEach(item => {
   const r = Math.random();
@@ -1050,31 +709,29 @@ menuItems.forEach(item => {
 
 let cart = {};
 let activeFilter = 'all';
-let searchQuery = '';
+let activeSort   = 'default';
+let searchQuery  = '';
 let hasActiveOrder = false;
 const OUT_OF_STOCK_DELAY = 5 * 60 * 1000;
 
 function el(id) { return document.getElementById(id); }
 
-// ── THEME ──
+/* ── THEME ── */
 const themeBtn = el('themeToggle');
 if (themeBtn) {
-  if (localStorage.getItem('theme') === 'dark') {
-    document.body.classList.add('dark');
-    themeBtn.textContent = '☀️';
-  }
+  if (localStorage.getItem('theme') === 'dark') { document.body.classList.add('dark'); themeBtn.textContent = '☀️'; }
   themeBtn.addEventListener('click', () => {
     document.body.classList.toggle('dark');
-    const isDark = document.body.classList.contains('dark');
-    themeBtn.textContent = isDark ? '☀️' : '🌙';
-    localStorage.setItem('theme', isDark ? 'dark' : 'light');
+    const d = document.body.classList.contains('dark');
+    themeBtn.textContent = d ? '☀️' : '🌙';
+    localStorage.setItem('theme', d ? 'dark' : 'light');
   });
 }
 
-// ── HERO CYCLE ──
+/* ── HERO CYCLE ── */
 const heroEl = el('heroEmoji');
 if (heroEl) {
-  const heroEmojis = ['🍛','🍕','🥘','🧆','🍚','🥗','🌯','🥟','🍲','🥭'];
+  const heroEmojis = ['🍛','🍕','🥘','🧆','🍚','🥗','🌯','🥟','🍲','🥭','🍜','🧋'];
   let hIdx = 0;
   setInterval(() => {
     hIdx = (hIdx + 1) % heroEmojis.length;
@@ -1083,33 +740,51 @@ if (heroEl) {
   }, 2500);
 }
 
-// ── STOCK PILL ──
+/* ── STOCK LABEL ── */
 function stockLabel(id) {
   const s = stockData[id];
-  if (s === 0) return '';
+  if (!s) return '';
   if (s === 1) return '<span class="stock-pill last">Last 1!</span>';
   if (s <= 3)  return '<span class="stock-pill low">Only ' + s + ' left</span>';
   return '';
 }
 
-// ── RENDER MENU ──
+/* ── SORT LOGIC ── */
+function sortItems(arr) {
+  const a = [...arr];
+  switch (activeSort) {
+    case 'price-asc':  return a.sort((x,y) => x.price - y.price);
+    case 'price-desc': return a.sort((x,y) => y.price - x.price);
+    case 'name-asc':   return a.sort((x,y) => x.name.localeCompare(y.name));
+    case 'name-desc':  return a.sort((x,y) => y.name.localeCompare(x.name));
+    case 'time-asc':   return a.sort((x,y) => x.mins - y.mins);
+    case 'veg-first':  return a.sort((x,y) => (x.type==='veg'?0:1) - (y.type==='veg'?0:1));
+    default:           return a; // original order
+  }
+}
+
+/* ── RENDER MENU ── */
 function renderMenu() {
   const grid = el('menuGrid');
   const countEl = el('itemCount');
   if (!grid) return;
-  const filtered = menuItems.filter(item => {
-    const matchSearch = item.name.toLowerCase().includes(searchQuery) || item.desc.toLowerCase().includes(searchQuery);
-    const matchFilter = activeFilter === 'all' || item.tag === activeFilter || (activeFilter === 'veg' && item.type === 'veg');
-    return matchSearch && matchFilter;
+
+  let filtered = menuItems.filter(item => {
+    const ms = item.name.toLowerCase().includes(searchQuery) || item.desc.toLowerCase().includes(searchQuery);
+    const mf = activeFilter === 'all' || item.tag === activeFilter || (activeFilter === 'veg' && item.type === 'veg');
+    return ms && mf;
   });
-  if (countEl) countEl.textContent = filtered.length + ' items';
+  filtered = sortItems(filtered);
+
+  if (countEl) countEl.textContent = filtered.length + ' item' + (filtered.length !== 1 ? 's' : '');
+
   grid.innerHTML = filtered.map(item => {
     const qty = cart[item.id] || 0;
     const oos = stockData[item.id] === 0;
     const qtyHTML = qty === 0
       ? '<button class="add-btn" data-id="' + item.id + '">+ Add</button>'
       : '<div class="qty-controls">'
-        + '<button class="qty-btn minus" data-id="' + item.id + '" data-action="dec">\u2212</button>'
+        + '<button class="qty-btn minus" data-id="' + item.id + '" data-action="dec">&#8722;</button>'
         + '<span class="qty-display">' + qty + '</span>'
         + '<button class="qty-btn plus" data-id="' + item.id + '" data-action="inc">+</button>'
         + '</div>';
@@ -1117,36 +792,37 @@ function renderMenu() {
       + '<div class="out-of-stock-badge">Out of Stock</div>'
       + '<div class="card-emoji-wrap"><span class="card-emoji">' + item.emoji + '</span></div>'
       + '<div class="card-body">'
-      + '<div class="card-tag"><span><span class="veg-dot ' + (item.type === 'veg' ? 'veg' : 'non-veg') + '"></span>'
-      + item.tag.charAt(0).toUpperCase() + item.tag.slice(1) + ' \u00B7 ' + item.time
+      + '<div class="card-tag"><span><span class="veg-dot ' + (item.type==='veg'?'veg':'non-veg') + '"></span>'
+      + item.tag.charAt(0).toUpperCase() + item.tag.slice(1) + ' &middot; ' + item.time
       + '</span>' + stockLabel(item.id) + '</div>'
       + '<div class="card-name">' + item.name + '</div>'
       + '<div class="card-desc">' + item.desc + '</div>'
       + '<div class="card-footer">'
-      + '<div class="card-price">\u20B9' + item.price + ' <span>/ pc</span></div>'
+      + '<div class="card-price">&#8377;' + item.price + ' <span>/ pc</span></div>'
       + qtyHTML + '</div></div></div>';
   }).join('');
-  grid.querySelectorAll('.add-btn').forEach(btn => {
-    btn.addEventListener('click', e => { e.stopPropagation(); changeQty(parseInt(btn.dataset.id), 1); });
-  });
-  grid.querySelectorAll('.qty-btn').forEach(btn => {
+
+  grid.querySelectorAll('.add-btn').forEach(btn =>
+    btn.addEventListener('click', e => { e.stopPropagation(); changeQty(+btn.dataset.id, 1); })
+  );
+  grid.querySelectorAll('.qty-btn').forEach(btn =>
     btn.addEventListener('click', e => {
       e.stopPropagation();
-      changeQty(parseInt(btn.dataset.id), btn.dataset.action === 'inc' ? 1 : -1, btn);
-    });
-  });
+      changeQty(+btn.dataset.id, btn.dataset.action === 'inc' ? 1 : -1, btn);
+    })
+  );
   setTimeout(() => grid.querySelectorAll('.reveal').forEach(e => e.classList.add('visible')), 50);
 }
 
-// ── CHANGE QTY ──
+/* ── CHANGE QTY ── */
 function changeQty(id, delta, btn) {
   if (hasActiveOrder) return;
   const item = menuItems.find(m => m.id === id);
   if (!item) return;
   const current = cart[id] || 0;
-  const newQty = current + delta;
+  const newQty  = current + delta;
   if (delta > 0 && newQty > stockData[id]) {
-    showToast('⚠️ Only ' + stockData[id] + ' portion' + (stockData[id] !== 1 ? 's' : '') + ' left for ' + item.name);
+    showToast('Only ' + stockData[id] + ' portion' + (stockData[id] !== 1 ? 's' : '') + ' left for ' + item.name);
     return;
   }
   if (newQty <= 0) { delete cart[id]; showToast('Removed ' + item.name); }
@@ -1154,53 +830,69 @@ function changeQty(id, delta, btn) {
     cart[id] = newQty;
     if (delta > 0) { showToast(item.emoji + ' ' + item.name + ' x' + newQty); if (btn) spawnParticles(btn, item.emoji); }
   }
-  renderMenu(); updateCartUI();
+  renderMenu();
+  updateCartUI();
 }
 
-// ── CART UI ──
+/* ── CART UI ── */
 function updateCartUI() {
   const ids = Object.keys(cart);
   const totalQty = ids.reduce((s, id) => s + cart[id], 0);
   const cartCountEl = el('cartCount'), cartBtnEl = el('cartBtn');
   const placeBtn = el('placeOrderBtn'), summary = el('cartSummary');
   if (cartCountEl) cartCountEl.textContent = totalQty;
-  if (cartBtnEl) cartBtnEl.innerHTML = '🛒 <span class="cart-label">Cart</span> <span class="cart-count">' + totalQty + '</span>';
+  if (cartBtnEl) cartBtnEl.innerHTML = '&#x1F6D2; <span class="cart-label">Cart</span>&nbsp;<span class="cart-count">' + totalQty + '</span>';
   if (placeBtn) placeBtn.disabled = (totalQty === 0 || hasActiveOrder);
   if (!summary) return;
   if (ids.length === 0) { summary.innerHTML = '<div class="cart-empty">Your cart is empty — add something delicious!</div>'; return; }
-  const subtotal = ids.reduce((s, id) => s + menuItems.find(m => m.id === parseInt(id)).price * cart[id], 0);
-  const gst = Math.round(subtotal * GST_RATE);
+  const subtotal = ids.reduce((s, id) => s + menuItems.find(m => m.id === +id).price * cart[id], 0);
+  const gst   = Math.round(subtotal * GST_RATE);
   const grand = subtotal + gst;
   summary.innerHTML = ids.map(id => {
-    const item = menuItems.find(m => m.id === parseInt(id));
+    const item = menuItems.find(m => m.id === +id);
     const q = cart[id];
     return '<div class="cart-item"><span class="cart-item-name">' + item.emoji + ' ' + item.name + '</span>'
-      + '<span class="cart-item-qty">' + q + ' x \u20B9' + item.price + '</span>'
-      + '<span class="cart-item-price">\u20B9' + (item.price * q) + '</span></div>';
-  }).join('') + '<div class="gst-breakdown">'
-    + '<div class="gst-line subtotal"><span>Subtotal</span><span>\u20B9' + subtotal + '</span></div>'
-    + '<div class="gst-line"><span>GST (5%)</span><span>+ \u20B9' + gst + '</span></div>'
-    + '<div class="gst-line total"><span>Grand Total <span class="gst-badge">incl. GST</span></span><span>\u20B9' + grand + '</span></div>'
+      + '<span class="cart-item-qty">' + q + ' x &#8377;' + item.price + '</span>'
+      + '<span class="cart-item-price">&#8377;' + (item.price * q) + '</span></div>';
+  }).join('')
+    + '<div class="gst-breakdown">'
+    + '<div class="gst-line subtotal"><span>Subtotal</span><span>&#8377;' + subtotal + '</span></div>'
+    + '<div class="gst-line"><span>GST (5%)</span><span>+ &#8377;' + gst + '</span></div>'
+    + '<div class="gst-line total"><span>Grand Total <span class="gst-badge">incl. GST</span></span><span>&#8377;' + grand + '</span></div>'
     + '</div>';
 }
 
-// ── FILTERS ──
+/* ── FILTER TABS ── */
 const filterTabsEl = el('filterTabs');
 if (filterTabsEl) {
   filterTabsEl.addEventListener('click', e => {
-    if (!e.target.classList.contains('filter-tab')) return;
+    const tab = e.target.closest('.filter-tab');
+    if (!tab) return;
     document.querySelectorAll('.filter-tab').forEach(t => t.classList.remove('active'));
-    e.target.classList.add('active');
-    activeFilter = e.target.dataset.filter;
+    tab.classList.add('active');
+    activeFilter = tab.dataset.filter;
     renderMenu();
   });
 }
+
+/* ── SORT BUTTONS ── */
+document.querySelectorAll('.sort-btn').forEach(btn => {
+  btn.addEventListener('click', () => {
+    document.querySelectorAll('.sort-btn').forEach(b => b.classList.remove('active'));
+    btn.classList.add('active');
+    activeSort = btn.dataset.sort;
+    renderMenu();
+    showToast('Sorted: ' + btn.textContent.trim());
+  });
+});
+
+/* ── SEARCH ── */
 const searchInput = el('searchInput');
 if (searchInput) {
   searchInput.addEventListener('input', e => { searchQuery = e.target.value.toLowerCase(); renderMenu(); });
 }
 
-// ── PLACE ORDER ──
+/* ── PLACE ORDER ── */
 const placeOrderBtn = el('placeOrderBtn');
 if (placeOrderBtn) {
   placeOrderBtn.addEventListener('click', () => {
@@ -1211,41 +903,40 @@ if (placeOrderBtn) {
     setTimeout(() => {
       if (overlay) overlay.classList.remove('show');
       const token = Math.floor(1000 + Math.random() * 9000);
-      const tokenNumEl = el('tokenNumber'), tokenStatEl = el('tokenStatus');
-      const tokenSectionEl = el('tokenSection'), lockedMsgEl = el('orderLockedMsg');
-      const placeBtnEl = el('placeOrderBtn');
-      if (tokenNumEl) tokenNumEl.textContent = token;
-      if (tokenStatEl) tokenStatEl.textContent = 'Order received! Preparing...';
-      if (tokenSectionEl) { tokenSectionEl.style.display = 'block'; tokenSectionEl.scrollIntoView({ behavior: 'smooth', block: 'center' }); }
-      if (placeBtnEl) { placeBtnEl.disabled = true; placeBtnEl.textContent = '✓ Order Placed'; }
-      if (lockedMsgEl) lockedMsgEl.style.display = 'block';
-      showToast('🎉 Token #' + token + ' confirmed!');
+      const tNum = el('tokenNumber'), tStat = el('tokenStatus');
+      const tSec = el('tokenSection'), tLock = el('orderLockedMsg'), tBtn = el('placeOrderBtn');
+      if (tNum)  tNum.textContent  = token;
+      if (tStat) tStat.textContent = 'Order received! Preparing...';
+      if (tSec)  { tSec.style.display = 'block'; tSec.scrollIntoView({ behavior:'smooth', block:'center' }); }
+      if (tBtn)  { tBtn.disabled = true; tBtn.textContent = '✓ Order Placed'; }
+      if (tLock) tLock.style.display = 'block';
+      showToast('Token #' + token + ' confirmed!');
       scheduleOutOfStock();
     }, 2200);
   });
 }
 
-// ── OUT OF STOCK ──
+/* ── OUT OF STOCK ── */
 function scheduleOutOfStock() {
   const candidates = menuItems.map(m => m.id).filter(() => Math.random() < 0.35);
   const waves = 2 + Math.floor(Math.random() * 3);
   for (let b = 0; b < waves; b++) {
-    const batchSize = Math.ceil(candidates.length / waves);
-    const batch = candidates.slice(b * batchSize, b * batchSize + batchSize);
+    const sz = Math.ceil(candidates.length / waves);
+    const batch = candidates.slice(b * sz, b * sz + sz);
     const delay = (b + 1) * (OUT_OF_STOCK_DELAY / waves) * (0.8 + Math.random() * 0.4);
     setTimeout(() => {
       batch.forEach(id => {
         stockData[id] = 0;
         const card = el('card-' + id);
         if (card) card.classList.add('out-of-stock');
-        if (cart[id]) { const item = menuItems.find(m => m.id === id); if (item) showToast('⚠️ "' + item.name + '" went out of stock!'); }
+        if (cart[id]) { const item = menuItems.find(m => m.id === id); if (item) showToast('"' + item.name + '" went out of stock!'); }
       });
       renderMenu();
     }, delay);
   }
 }
 
-// ── REFRESH ──
+/* ── REFRESH GUARD ── */
 window.addEventListener('beforeunload', e => {
   if (Object.keys(cart).length > 0 || hasActiveOrder) { e.preventDefault(); e.returnValue = ''; }
 });
@@ -1253,16 +944,15 @@ document.addEventListener('keydown', e => {
   if (e.key === 'F5' || (e.ctrlKey && e.key === 'r') || (e.metaKey && e.key === 'r')) {
     if (Object.keys(cart).length > 0 || hasActiveOrder) {
       e.preventDefault();
-      const modal = el('refreshModal');
-      if (modal) modal.classList.add('show');
+      const m = el('refreshModal'); if (m) m.classList.add('show');
     }
   }
 });
 const cancelBtn = el('cancelRefresh'), confirmBtn = el('confirmRefresh');
-if (cancelBtn) cancelBtn.addEventListener('click', () => { const m = el('refreshModal'); if (m) m.classList.remove('show'); });
+if (cancelBtn)  cancelBtn.addEventListener('click', () => { const m = el('refreshModal'); if (m) m.classList.remove('show'); });
 if (confirmBtn) confirmBtn.addEventListener('click', () => window.location.reload(true));
 
-// ── TOAST ──
+/* ── TOAST ── */
 let toastTimer;
 function showToast(msg) {
   const t = el('toast'); if (!t) return;
@@ -1271,217 +961,264 @@ function showToast(msg) {
   toastTimer = setTimeout(() => t.classList.remove('show'), 3000);
 }
 
-// ── PARTICLES ──
+/* ── PARTICLES ── */
 function spawnParticles(btn, emoji) {
   const rect = btn.getBoundingClientRect();
   for (let i = 0; i < 6; i++) {
     const p = document.createElement('div');
     p.className = 'particle'; p.textContent = emoji;
-    p.style.left = (rect.left + rect.width / 2 + (Math.random() - 0.5) * 80) + 'px';
-    p.style.top = (rect.top + rect.height / 2 + (Math.random() - 0.5) * 40) + 'px';
-    p.style.animationDelay = (Math.random() * 0.3) + 's';
-    p.style.fontSize = (14 + Math.random() * 14) + 'px';
+    p.style.left = (rect.left + rect.width/2 + (Math.random()-0.5)*80) + 'px';
+    p.style.top  = (rect.top  + rect.height/2 + (Math.random()-0.5)*40) + 'px';
+    p.style.animationDelay = (Math.random()*0.3) + 's';
+    p.style.fontSize = (14 + Math.random()*14) + 'px';
     document.body.appendChild(p);
     setTimeout(() => p.remove(), 3500);
   }
 }
 
-// ── SCROLL REVEAL ──
+/* ── SCROLL REVEAL ── */
 const revealObserver = new IntersectionObserver(entries => {
   entries.forEach(e => { if (e.isIntersecting) e.target.classList.add('visible'); });
 }, { threshold: 0.08 });
 document.querySelectorAll('.reveal').forEach(e => revealObserver.observe(e));
 
-// ── CART BTN ──
-const cartBtn = el('cartBtn');
-if (cartBtn) {
-  cartBtn.addEventListener('click', () => {
+/* ── CART BTN SCROLL ── */
+const cartBtnEl = el('cartBtn');
+if (cartBtnEl) {
+  cartBtnEl.addEventListener('click', () => {
     const oc = document.querySelector('.order-card');
-    if (oc) oc.scrollIntoView({ behavior: 'smooth' });
+    if (oc) oc.scrollIntoView({ behavior:'smooth' });
   });
 }
 
-// ════════════════════════════════════════════════
-// CHATBOT — built-in smart Q&A (no API needed)
-// ════════════════════════════════════════════════
-const chatFab    = el('chatFab');
-const chatWindow = el('chatWindow');
-const chatClose  = el('chatClose');
-const chatMessages = el('chatMessages');
-const chatInput  = el('chatInput');
-const chatSend   = el('chatSend');
-const chatQuick  = el('chatQuick');
-
+/* ════════════════════════════════════════════════════
+   CHATBOT
+   ════════════════════════════════════════════════════ */
+const chatFab      = el('chatFab');
+const chatWindow   = el('chatWindow');
+const chatClose    = el('chatClose');
+const chatMsgs     = el('chatMessages');
+const chatInput    = el('chatInput');
+const chatSend     = el('chatSend');
+const chatQuickEl  = el('chatQuick');
 let chatOpen = false;
-let chatHistory = [];
 
 function toggleChat(open) {
   chatOpen = typeof open === 'boolean' ? open : !chatOpen;
+  chatWindow.classList.toggle('open', chatOpen);
   if (chatOpen) {
-    chatWindow.classList.add('open');
-    chatFab.querySelector('.badge') && (chatFab.querySelector('.badge').style.display = 'none');
-    if (chatMessages.children.length === 0) greetUser();
-    setTimeout(() => chatInput.focus(), 300);
-  } else {
-    chatWindow.classList.remove('open');
+    const badge = chatFab.querySelector('.badge');
+    if (badge) badge.style.display = 'none';
+    if (chatMsgs.children.length === 0) greetUser();
+    setTimeout(() => chatInput && chatInput.focus(), 300);
   }
 }
-
-chatFab.addEventListener('click', () => toggleChat());
-chatClose.addEventListener('click', () => toggleChat(false));
-
-// Quick reply buttons
-chatQuick.addEventListener('click', e => {
-  const btn = e.target.closest('.quick-btn');
-  if (!btn) return;
-  const q = btn.dataset.q;
-  addBubble(q, 'user');
-  chatHistory.push({ role: 'user', content: q });
-  chatQuick.style.display = 'none';
-  respondToQuery(q);
-});
+if (chatFab)   chatFab.addEventListener('click', () => toggleChat());
+if (chatClose) chatClose.addEventListener('click', () => toggleChat(false));
+if (chatQuickEl) {
+  chatQuickEl.addEventListener('click', e => {
+    const btn = e.target.closest('.quick-btn');
+    if (!btn) return;
+    const q = btn.dataset.q;
+    addBubble(q, 'user');
+    chatQuickEl.style.display = 'none';
+    respond(q);
+  });
+}
 
 function greetUser() {
-  const greet = "Hey there! 👋 I'm Panda, M3W3's AI assistant. I can help you find dishes, answer questions about your order, explain how GST is calculated, and more. What would you like to know?";
-  addBubble(greet, 'bot');
+  addBubble("Hey there! 👋 I'm Panda, M3W3's AI assistant.\n\nI can help you find dishes, explain pricing, check stock, calculate GST, or tell you anything about the app. What would you like to know?", 'bot');
 }
 
 function addBubble(text, role) {
   const div = document.createElement('div');
   div.className = 'chat-bubble ' + role;
   div.textContent = text;
-  chatMessages.appendChild(div);
-  chatMessages.scrollTop = chatMessages.scrollHeight;
+  chatMsgs.appendChild(div);
+  chatMsgs.scrollTop = chatMsgs.scrollHeight;
 }
 
-function addTypingIndicator() {
+function addTyping() {
   const div = document.createElement('div');
-  div.className = 'chat-bubble typing';
-  div.id = 'typingIndicator';
+  div.className = 'chat-bubble typing'; div.id = 'typingInd';
   div.innerHTML = '<span class="typing-dot"></span><span class="typing-dot"></span><span class="typing-dot"></span>';
-  chatMessages.appendChild(div);
-  chatMessages.scrollTop = chatMessages.scrollHeight;
+  chatMsgs.appendChild(div); chatMsgs.scrollTop = chatMsgs.scrollHeight;
 }
+function removeTyping() { const t = el('typingInd'); if (t) t.remove(); }
 
-function removeTypingIndicator() {
-  const t = el('typingIndicator');
-  if (t) t.remove();
-}
-
-// ── Smart built-in responses ──
-function respondToQuery(query) {
-  addTypingIndicator();
-  chatSend.disabled = true;
-  const delay = 700 + Math.random() * 600;
-
+function respond(query) {
+  if (!chatSend) return;
+  addTyping(); chatSend.disabled = true;
   setTimeout(() => {
-    removeTypingIndicator();
-    chatSend.disabled = false;
-    const answer = getAnswer(query.toLowerCase());
+    removeTyping(); chatSend.disabled = false;
+    const answer = getAnswer(query.toLowerCase().trim());
     addBubble(answer, 'bot');
-    chatHistory.push({ role: 'assistant', content: answer });
-    chatMessages.scrollTop = chatMessages.scrollHeight;
-  }, delay);
+    chatMsgs.scrollTop = chatMsgs.scrollHeight;
+  }, 600 + Math.random() * 700);
 }
 
+/* ── CHATBOT BRAIN ── */
 function getAnswer(q) {
-  // Menu queries
-  if (q.includes('menu') || q.includes('what') && q.includes('food')) {
-    return "We have 40 items across 4 categories: 🇮🇳 Indian (Butter Chicken, Dal Makhani, Biryani, Palak Paneer and more), 🇮🇹 Italian (Pizzas, Pasta, Tiramisu), 🥙 Snacks (Pav Bhaji, Samosa, Vada Pav, Kathi Roll) and 🥤 Drinks (Mango Lassi, Masala Chai, Cold Coffee). Use the filter tabs to browse by category!";
+  const has = (...words) => words.some(w => q.includes(w));
+
+  // GREETINGS
+  if (has('hello','hi','hey','namaste','hola','yo','sup')) {
+    return "Namaste! 🙏 Great to have you at M3W3! I'm Panda — ask me about the menu, prices, GST, how to order, stock availability, or anything else. I've got you covered! 🐼";
   }
-  if (q.includes('veg') || q.includes('vegetarian')) {
-    const vegItems = menuItems.filter(m => m.type === 'veg');
-    return "Great news! We have " + vegItems.length + " vegetarian dishes. Some popular ones: Dal Makhani 🍲, Paneer Tikka Masala 🧀, Veg Biryani 🌾, Masala Dosa 🥞, Pav Bhaji 🧆, and more. Click '🟢 Veg' in the filters to see all!";
+
+  // THANKS
+  if (has('thank','thanks','ty','great job','awesome','good bot','nice')) {
+    return "Happy to help! 😊 Enjoy your meal at M3W3. If anything else comes up, just ask. Bon appétit! 🐼🎋";
   }
-  if (q.includes('non-veg') || q.includes('chicken') || q.includes('mutton') || q.includes('meat') || q.includes('fish')) {
-    const nvItems = menuItems.filter(m => m.type === 'non-veg');
-    return "We have " + nvItems.length + " non-veg options including Butter Chicken 🍗, Chicken Biryani 🍚, Rogan Josh 🥘, Mutton Korma 🍖, Fish Curry 🐟, Lamb Seekh Kebab 🥩, Chicken Kathi Roll 🌯 and more!";
+
+  // FULL MENU
+  if (has('menu','full menu','all items','what food','what do you have')) {
+    const cats = ['indian','italian','snacks','drinks'];
+    return "Here's our full menu (40 items):\n\n" + cats.map(cat => {
+      const items = menuItems.filter(m => m.tag === cat);
+      return cat.toUpperCase() + ' (' + items.length + '):\n' + items.map(m => '• ' + m.name + ' — ₹' + m.price).join('\n');
+    }).join('\n\n');
   }
-  // Price / cheap
-  if (q.includes('cheap') || q.includes('budget') || q.includes('affordable') || q.includes('price') || q.includes('cost')) {
-    const sorted = [...menuItems].sort((a,b) => a.price - b.price).slice(0,5);
-    return "Our most affordable options: " + sorted.map(m => m.name + ' (\u20B9' + m.price + ')').join(', ') + ". All prices are pre-GST — 5% GST is added at checkout.";
+
+  // VEG
+  if (has('veg','vegetarian','no meat','plant')) {
+    const v = menuItems.filter(m => m.type === 'veg');
+    const sample = v.slice(0,6).map(m => m.emoji + ' ' + m.name).join(', ');
+    return "We have " + v.length + " vegetarian dishes! Popular picks: " + sample + " and more.\n\nTap '🟢 Veg' in the filter tabs to see all of them at once!";
   }
-  // GST
-  if (q.includes('gst') || q.includes('tax') || q.includes('total')) {
-    return "We apply a flat 5% GST on your subtotal. For example, if your subtotal is \u20B9500, the GST adds \u20B925, making your grand total \u20B9525. The breakdown is clearly shown in your order summary before you confirm!";
+
+  // NON-VEG
+  if (has('non-veg','nonveg','chicken','mutton','lamb','meat','fish','egg','seafood')) {
+    const nv = menuItems.filter(m => m.type === 'non-veg');
+    return "We have " + nv.length + " non-veg options: " + nv.map(m => m.emoji + ' ' + m.name + ' (₹' + m.price + ')').join(', ') + ".\n\nAll cooked fresh to order!";
   }
-  // How to order
-  if (q.includes('order') || q.includes('how') || q.includes('place')) {
-    return "Super easy! 1️⃣ Browse the menu and tap '+ Add' on any item. 2️⃣ Use ➕/➖ to adjust quantities — the cart updates live with GST. 3️⃣ Scroll down to 'Your Order' and tap 'Place Order'. 4️⃣ Your unique token number is generated — show it to collect your food!";
+
+  // GST CALCULATION
+  if (has('gst','tax','how much tax','total','grand total','inclusive')) {
+    return "Here's how GST works at M3W3:\n\n📝 We charge a flat 5% GST on your subtotal.\n\nExample:\n• Subtotal: ₹500\n• GST (5%): ₹25\n• Grand Total: ₹525\n\nThe full breakdown (Subtotal → GST → Grand Total) is shown live in your cart as you add items. Nothing hidden!";
   }
-  // Token
-  if (q.includes('token') || q.includes('pickup') || q.includes('collect')) {
-    return "After placing your order, you'll get a 4-digit token number. Show this token at the counter to collect your food. Note: you can only place one order per session!";
+
+  // HOW TO ORDER
+  if (has('how to order','place order','ordering','how order','steps')) {
+    return "Ordering at M3W3 is super simple:\n\n1️⃣ Browse the menu and tap '+ Add'\n2️⃣ Use + / − to adjust quantities\n3️⃣ Check your cart — GST is shown live\n4️⃣ Tap 'Place Order'\n5️⃣ Show your 4-digit token at the counter to collect your food!\n\nNo signup needed. Just eat! 🐼";
   }
-  // Best sellers / popular
-  if (q.includes('best') || q.includes('popular') || q.includes('recommend') || q.includes('star')  || q.includes('delicious')) {
-    return "Our crowd favourites are: 🍗 Butter Chicken (\u20B9220), 🍚 Chicken Biryani (\u20B9260), 🧀 Paneer Tikka Masala (\u20B9190), 🍕 Margherita Pizza (\u20B9250), 🌯 Chicken Kathi Roll (\u20B9130), and 🧆 Pav Bhaji (\u20B9110). All chef-recommended!";
+
+  // TOKEN
+  if (has('token','collect','pickup','my order','order status')) {
+    return "After placing your order, you'll receive a unique 4-digit token number (e.g. #7342).\n\nSimply show this token at the counter and your freshly prepared food will be handed to you!\n\n⚠️ Note: you can only place one order per session.";
   }
-  // About M3W3
-  if (q.includes('m3w3') || q.includes('about') || q.includes('app') || q.includes('who')) {
-    return "M3W3 is a beta food ordering app built for speed and freshness. Think of us as your quick-service canteen — real Indian food (and some Italian!) ordered digitally with live stock tracking, GST-inclusive billing, and a unique token system. No signup needed. Just eat! 🐼";
+
+  // BEST SELLERS
+  if (has('best seller','bestseller','popular','most ordered','recommend','top dish','must try')) {
+    return "Our crowd favourites:\n\n🍗 Butter Chicken — ₹220\n🍚 Chicken Biryani — ₹260\n🧀 Paneer Tikka Masala — ₹190\n🍕 Margherita Pizza — ₹250\n🌯 Chicken Kathi Roll — ₹130\n🧆 Pav Bhaji — ₹110\n🥭 Mango Lassi — ₹80\n\nAll chef-recommended! 👨‍🍳";
   }
-  // Italian
-  if (q.includes('italian') || q.includes('pizza') || q.includes('pasta')) {
-    return "For Italian cravings, we have: 🍕 Margherita Pizza (\u20B9250), 🍕 Pepperoni Pizza (\u20B9320), 🍝 Pasta Arrabiata (\u20B9220), 🥖 Garlic Bread (\u20B9120), and 🍰 Tiramisu (\u20B9180). Filter by 'Italian' to see them all!";
+
+  // BUDGET / CHEAP
+  if (has('cheap','budget','affordable','cheapest','lowest price','under 100','under 50','economical')) {
+    const sorted = [...menuItems].sort((a,b) => a.price - b.price).slice(0,7);
+    return "Our most budget-friendly options:\n\n" + sorted.map(m => m.emoji + ' ' + m.name + ' — ₹' + m.price).join('\n') + "\n\nAll prices are pre-GST — 5% added at checkout.";
   }
-  // Drinks
-  if (q.includes('drink') || q.includes('lassi') || q.includes('chai') || q.includes('coffee') || q.includes('beverage')) {
-    return "Our drinks menu: 🥭 Mango Lassi (\u20B980), ☕ Masala Chai (\u20B940), 🍋 Nimbu Pani (\u20B950), 🧋 Cold Coffee (\u20B9120), 🍹 Aam Panna (\u20B960). Filter by 'Drinks' to see them!";
+
+  // MOST EXPENSIVE
+  if (has('expensive','premium','luxury','costliest','highest price')) {
+    const sorted = [...menuItems].sort((a,b) => b.price - a.price).slice(0,5);
+    return "Our premium picks:\n\n" + sorted.map(m => m.emoji + ' ' + m.name + ' — ₹' + m.price).join('\n') + "\n\nWorth every rupee! 👑";
   }
-  // Out of stock
-  if (q.includes('stock') || q.includes('available') || q.includes('out of')) {
+
+  // FASTEST
+  if (has('fastest','quick','ready fast','quick meal','no wait','fast food','5 min','3 min')) {
+    const fast = [...menuItems].sort((a,b) => a.mins - b.mins).slice(0,6);
+    return "Fastest items on our menu:\n\n" + fast.map(m => m.emoji + ' ' + m.name + ' — ' + m.time).join('\n') + "\n\nPerfect when you're in a hurry! ⚡";
+  }
+
+  // ITALIAN
+  if (has('italian','pizza','pasta','tiramisu','garlic bread')) {
+    const it = menuItems.filter(m => m.tag === 'italian');
+    return "Italian selection:\n\n" + it.map(m => m.emoji + ' ' + m.name + ' — ₹' + m.price + ' (' + m.time + ')').join('\n') + "\n\nFilter by 'Italian' to find them quickly!";
+  }
+
+  // DRINKS
+  if (has('drink','drinks','beverage','lassi','chai','coffee','lemonade','panna','smoothie')) {
+    const dr = menuItems.filter(m => m.tag === 'drinks');
+    return "Drinks available:\n\n" + dr.map(m => m.emoji + ' ' + m.name + ' — ₹' + m.price).join('\n') + "\n\nClick '🥤 Drinks' filter to see them all!";
+  }
+
+  // SNACKS / STREET FOOD
+  if (has('snack','snacks','street food','chaat','frankie','kathi','bhaji','samosa','puri','vada')) {
+    const sn = menuItems.filter(m => m.tag === 'snacks');
+    return "Our snacks & street food:\n\n" + sn.map(m => m.emoji + ' ' + m.name + ' — ₹' + m.price).join('\n') + "\n\nFilter by 'Snacks' to browse!";
+  }
+
+  // DESSERT
+  if (has('dessert','sweet','gulab jamun','kheer','tiramisu','mithai','sweet dish')) {
+    return "Desserts available:\n\n🍩 Gulab Jamun — ₹80 (2 pcs)\n🍨 Kheer — ₹90\n🍰 Tiramisu — ₹180\n\nPerfect to round off your meal! 🍬";
+  }
+
+  // SPICY
+  if (has('spicy','spice','hot','chilli','mild','less spicy')) {
+    return "🌶️ Hot picks: Rogan Josh, Chana Masala, Pasta Arrabiata, Fish Curry (Bengali)\n\n🍃 Mild & rich: Dal Makhani, Shahi Paneer, Mutton Korma, Mango Lassi\n\nAll dishes are cooked fresh — ask at the counter if you want extra mild!";
+  }
+
+  // SPECIFIC DISH PRICE
+  const dishMatch = menuItems.find(m => q.includes(m.name.toLowerCase()));
+  if (dishMatch) {
+    const stock = stockData[dishMatch.id];
+    const stockInfo = stock === 0 ? '❌ Currently out of stock.' : stock <= 3 ? '⚠️ Only ' + stock + ' left in stock!' : '✅ In stock.';
+    return dishMatch.emoji + ' ' + dishMatch.name + '\n\nPrice: ₹' + dishMatch.price + ' per portion\nCategory: ' + dishMatch.tag.charAt(0).toUpperCase() + dishMatch.tag.slice(1) + '\nType: ' + dishMatch.type + '\nPrep time: ' + dishMatch.time + '\n' + stockInfo + '\n\n' + dishMatch.desc;
+  }
+
+  // STOCK CHECK
+  if (has('stock','available','out of stock','sold out','in stock')) {
     const oos = menuItems.filter(m => stockData[m.id] === 0);
-    if (oos.length === 0) return "Good news — everything is currently in stock! Stock levels update in real time though, so keep an eye on the 'Only X left' badges.";
-    return oos.length + " item(s) are currently out of stock. Items marked with a grey 'Out of Stock' badge are unavailable. We refresh stock regularly!";
+    const low = menuItems.filter(m => stockData[m.id] > 0 && stockData[m.id] <= 3);
+    let reply = '';
+    if (oos.length) reply += '❌ Out of stock (' + oos.length + '): ' + oos.map(m => m.name).join(', ') + '\n\n';
+    if (low.length) reply += '⚠️ Running low: ' + low.map(m => m.name + ' (' + stockData[m.id] + ' left)').join(', ') + '\n\n';
+    if (!reply) reply = '🎉 Great news — everything is fully stocked right now!\n\n';
+    reply += 'Stock updates live — watch for badges on the menu cards.';
+    return reply;
   }
-  // Delivery / dine in
-  if (q.includes('deliver') || q.includes('dine') || q.includes('table') || q.includes('take')) {
-    return "M3W3 is a counter-service app. Place your order digitally, get a token, and collect your freshly prepared food from the counter. No delivery currently — we're beta! 🚧";
+
+  // ABOUT M3W3
+  if (has('m3w3','about','app','who are','what is','platform')) {
+    return "M3W3 is a beta food ordering app.\n\n🐼 Built for speed & freshness\n🏷️ Counter-service — order digitally, collect with your token\n🟢 Live stock tracking per item\n🧾 Transparent GST billing\n🔒 One order per session\n📵 No signup needed\n\nWe serve Indian street food, mains, Italian classics, and refreshing drinks!";
   }
-  // Spicy
-  if (q.includes('spicy') || q.includes('mild') || q.includes('hot')) {
-    return "Heat lovers: try Rogan Josh 🥘, Chana Masala 🫛, or Pasta Arrabiata 🍝 for a good kick! For milder options: Dal Makhani 🍲, Shahi Paneer 🍮, or Mutton Korma 🍖 are rich but gentle on the palate.";
+
+  // DELIVERY
+  if (has('deliver','delivery','home','bring','ship')) {
+    return "M3W3 is currently counter-service only.\n\nPlace your order → get a token → collect from the counter.\n\nWe're in beta — delivery may be coming in a future update! 🚚 Stay tuned.";
   }
-  // Dessert / sweet
-  if (q.includes('dessert') || q.includes('sweet') || q.includes('sweet')) {
-    return "For a sweet ending: 🟤 Gulab Jamun (\u20B980, 2 pcs), 🍨 Kheer (\u20B990), or 🍰 Tiramisu (\u20B9180) — a little Italian flair! Perfect to round off your meal.";
+
+  // CONTACT
+  if (has('contact','phone','call','email','reach','support','help','speak to')) {
+    return "Reach us here:\n\n📞 +91 70440 44755\n📞 +91 89817 37392\n📞 +91 70015 27630\n📞 +91 62968 88154\n✉️ arkeshbhattacharya@gmail.com\n\nWe're happy to help! 🙏";
   }
-  // Contact / help / human
-  if (q.includes('contact') || q.includes('help') || q.includes('human') || q.includes('support') || q.includes('phone')) {
-    return "Need to speak to us? Call our team:\n📞 +91 70440 44755\n📞 +91 89817 37392\n📞 +91 70015 27630\n📞 +91 62968 88154\nWe're happy to assist!";
+
+  // SORT / FILTER HELP
+  if (has('sort','filter','search','find','browse','how to find')) {
+    return "Here's how to find what you want:\n\n🔍 Search bar — type any dish or ingredient\n🏷️ Filter tabs — browse by Indian / Italian / Snacks / Drinks / Veg\n↕️ Sort buttons — sort by Price (low/high), Name (A-Z), Fastest prep time, or Veg first\n\nAll combinations work together!";
   }
-  // Greetings
-  if (q.includes('hello') || q.includes('hi') || q.includes('hey') || q.includes('namaste')) {
-    return "Namaste! 🙏 Great to have you at M3W3. I'm Panda, your food guide. Ask me about our menu, prices, how to order, or anything else — I'm here to help! 🐼";
-  }
-  // Thanks
-  if (q.includes('thank') || q.includes('thanks') || q.includes('great') || q.includes('awesome')) {
-    return "Happy to help! 😊 Enjoy your meal at M3W3. If you have more questions, I'm right here. Bon appétit! 🐼🎋";
-  }
-  // Default
-  return "Hmm, I'm not sure about that one! 🤔 I can help with: menu options, prices, GST, how to order, stock availability, popular dishes, drinks, and more. What would you like to know? You can also call us at +91 70440 44755.";
+
+  // DEFAULT
+  return "Hmm, I'm not sure about that one! 🤔\n\nI can help with:\n• Menu & prices\n• Specific dish info\n• GST calculation\n• How to order\n• Stock availability\n• Budget picks & best sellers\n• Contact info\n\nTry asking something like \"What's cheap?\", \"Show me veg options\", or \"How does GST work?\"";
 }
 
-// ── Send message ──
 function sendChat() {
-  const input = chatInput;
-  const msg = input.value.trim();
+  const msg = chatInput.value.trim();
   if (!msg) return;
-  input.value = '';
-  chatQuick.style.display = 'none';
+  chatInput.value = '';
+  if (chatQuickEl) chatQuickEl.style.display = 'none';
   addBubble(msg, 'user');
-  chatHistory.push({ role: 'user', content: msg });
-  respondToQuery(msg);
+  respond(msg);
+}
+if (chatSend) chatSend.addEventListener('click', sendChat);
+if (chatInput) {
+  chatInput.addEventListener('keydown', e => {
+    if (e.key === 'Enter' && !e.shiftKey) { e.preventDefault(); sendChat(); }
+  });
 }
 
-chatSend.addEventListener('click', sendChat);
-chatInput.addEventListener('keydown', e => {
-  if (e.key === 'Enter' && !e.shiftKey) { e.preventDefault(); sendChat(); }
-});
-
-// ── INIT ──
+/* ── INIT ── */
 renderMenu();
 
 }); // end DOMContentLoaded
